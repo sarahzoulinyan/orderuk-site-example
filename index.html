@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order.uk - Food Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- RESET E ESTILOS GLOBAIS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* ===== SCROLLBAR PERSONALIZADA ===== */
+        /* Para Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #FF9800 #f1f1f1;
+        }
+
+        /* Para Chrome, Edge e Safari */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #FF9800, #e68a00);
+            border-radius: 10px;
+            border: 2px solid #f1f1f1;
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #e68a00, #cc7a00);
+            transform: scale(1.1);
+        }
+
+        /* Scrollbar para a área do hero (opcional) */
+        .hero::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .hero::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+
+        .hero::-webkit-scrollbar-thumb {
+            background: #FF9800;
+            border-radius: 10px;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        :root {
+            --primary-orange: #FF9800;
+            --dark-navy: #0b0b1c;
+            --light-bg: #f8f9fa;
+            --green-success: #28a745;
+            --text-grey: #666;
+        }
+
+        .container {
+            width: min(100% - 40px, 1200px);
+            margin-inline: auto;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-orange);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #e68a00;
+            transform: scale(1.05);
+        }
+
+        .btn-dark {
+            background-color: var(--dark-navy);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* --- HEADER (TOPBAR + NAV) --- */
+        .header-wrapper {
+            background: #fff;
+            width: 100%;
+            padding-top: 15px;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            width: min(100% - 40px, 1200px);
+            min-height: 40px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 30px;
+            padding: 5px 20px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        .top-bar span i {
+            color: var(--primary-orange);
+            margin-right: 6px;
+        }
+        .top-bar .cart-info {
+            background: var(--green-success);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 10px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            width: min(100% - 40px, 1200px);
+            min-height: 70px;
+            display: grid;
+            grid-template-columns: 160px 1fr 180px;
+            align-items: center;
+            padding: 0;
+            margin: 15px auto 0;
+            background: white;
+        }
+
+        .logo {
+            font-size: 34px;
+            font-weight: 700;
+            color: var(--dark-navy);
+            letter-spacing: -1.5px;
+            display: flex;
+            align-items: center;
+        }
+        .logo span {
+            color: var(--primary-orange);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 35px;
+        }
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 500;
+            color: #111;
+            white-space: nowrap;
+            transition: 0.2s ease;
+        }
+        .nav-links a:hover {
+            color: var(--primary-orange);
+        }
+        .nav-links a.active {
+            background: var(--primary-orange);
+            color: white;
+            padding: 10px 28px;
+            border-radius: 30px;
+        }
+
+        .nav-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .nav-actions .btn-dark {
+            font-size: 12px;
+            padding: 10px 22px;
+            white-space: nowrap;
+        }
+
+        /* ===== BOTTOM NAV (Mobile) ===== */
+        .bottom-nav {
+            display: none;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            width: min(100% - 40px, 1200px);
+            background-color: var(--dark-navy);
+            border-radius: 30px;
+            margin: 30px auto 20px;
+            padding: 60px 40px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 40px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        .hero-text p {
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+        .hero-text h1 {
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .hero-text h1 span {
+            color: var(--primary-orange);
+        }
+        .hero-text .search-box {
+            background: white;
+            padding: 5px;
+            border-radius: 30px;
+            display: flex;
+            max-width: 400px;
+            margin-top: 20px;
+        }
+        .hero-text .search-box input {
+            border: none;
+            padding: 10px 20px;
+            flex: 1;
+            outline: none;
+            background: transparent;
+        }
+
+        .hero-image-area {
+            position: relative;
+            min-height: 285px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: visible;
+        }
+
+        .hero-image-area::before {
+            content: "";
+            position: absolute;
+            right: -120px;
+            bottom: -150px;
+            width: 430px;
+            height: 430px;
+            background: var(--primary-orange);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .hero-shadow {
+            position: absolute;
+            width: 535px;
+            height: auto;
+            left: 10%;
+            bottom: -27%;
+            transform: translateX(-68%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .hero-woman {
+            position: absolute;
+            width: 310px;
+            max-width: none;
+            height: auto;
+            left: 20%;
+            bottom: -27%;
+            transform: translateX(-35%);
+            z-index: 4;
+            border-radius: 0;
+            pointer-events: none;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: white;
+            color: #111;
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.16);
+            font-size: 8px;
+            width: 165px;
+            z-index: 8;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .floating-card strong {
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .floating-card small {
+            color: #777;
+            font-size: 12px;
+        }
+        .fc-1 {
+            top: 38px;
+            right: -8px;
+        }
+        .fc-2 {
+            top: 128px;
+            right: 8px;
+        }
+        .fc-3 {
+            bottom: 30px;
+            right: 45px;
+        }
+        .fc-2 .fa-check-circle {
+            color: #16a34a;
+        }
+        .fc-3 .fa-motorcycle {
+            color: #ef4444;
+        }
+
+        /* --- DEALS SECTION --- */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .section-header h2 {
+            font-size: 24px;
+        }
+        .section-header h2 i {
+            color: var(--primary-orange);
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .filters span {
+            padding: 5px 15px;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .filters span.active {
+            background: white;
+            border: 1px solid var(--primary-orange);
+            color: var(--primary-orange);
+        }
+
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .deal-card {
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            height: 250px;
+            cursor: pointer;
+        }
+        .deal-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.3s;
+        }
+        .deal-card:hover img {
+            transform: scale(1.05);
+        }
+        .deal-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+        .deal-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--dark-navy);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        /* --- POPULAR CATEGORIES --- */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        .category-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .category-card h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .category-card p {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* --- POPULAR RESTAURANTS --- */
+        .restaurants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .restaurant-logo {
+            background: #fff;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        .restaurant-logo p {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* --- APP BANNER --- */
+        .app-banner {
+            background: #f0f2f5;
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 40px auto;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .app-banner-content {
+            flex: 1;
+            min-width: 250px;
+        }
+        .app-banner-content h2 {
+            font-size: 32px;
+            color: var(--dark-navy);
+            margin-bottom: 10px;
+        }
+        .app-banner-content h2 span {
+            color: var(--primary-orange);
+        }
+        .app-banner-content .badge-dark {
+            background: var(--dark-navy);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .app-banner-img {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .app-banner-img img {
+            height: 50px;
+        }
+
+        /* --- PARTNER SECTION --- */
+        .partner-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .partner-card {
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            min-height: 250px;
+            height: clamp(220px, 25vw, 280px);
+        }
+        .partner-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .partner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 30px;
+            color: white;
+        }
+        .partner-overlay h3 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        .partner-overlay .badge-white {
+            background: white;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* --- STATS --- */
+        .stats-bar {
+            background: var(--primary-orange);
+            border-radius: 15px;
+            padding: 30px;
+            display: flex;
+            justify-content: space-around;
+            color: white;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 40px auto;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-item h2 {
+            font-size: 32px;
+        }
+        .stat-item p {
+            font-size: 14px;
+        }
+
+        /* --- FAQ SECTION --- */
+        .faq-section {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 20px;
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .faq-list {
+            flex: 1;
+            min-width: 250px;
+        }
+        .faq-item {
+            background: white;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-item.active {
+            background: var(--primary-orange);
+            color: white;
+        }
+        .faq-item:hover:not(.active) {
+            background: #eee;
+        }
+        
+        .faq-visual {
+            flex: 1.5;
+            background: var(--dark-navy);
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .visual-step {
+            text-align: center;
+        }
+        .visual-step .icon-box {
+            background: white;
+            color: var(--dark-navy);
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+        }
+        .visual-step h4 {
+            font-size: 14px;
+        }
+        .visual-step p {
+            font-size: 11px;
+            color: #aaa;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #f8f9fa;
+            padding: 60px 0 20px;
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo h2 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+        .footer-logo h2 span {
+            color: var(--primary-orange);
+        }
+        .footer-logo p {
+            font-size: 12px;
+            margin: 15px 0;
+            color: #777;
+        }
+        .store-buttons img {
+            height: 40px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .newsletter h4 {
+            margin-bottom: 15px;
+        }
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .newsletter-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+        .footer-links ul li a {
+            font-size: 14px;
+            color: #666;
+            transition: 0.3s;
+        }
+        .footer-links ul li a:hover {
+            color: var(--primary-orange);
+        }
+
+        .bottom-bar {
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #777;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .bottom-bar-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* ========================================================== */
+        /* === RESPONSIVIDADE === */
+        /* ========================================================== */
+
+        /* Tablets / Telas médias (max-width: 992px) */
+        @media (max-width: 992px) {
+            .header-wrapper {
+                padding-top: 10px;
+            }
+            
+            .top-bar {
+                width: min(100% - 30px, 1200px);
+                min-height: 35px;
+                font-size: 10px;
+                padding: 5px 15px;
+                border-radius: 30px;
+            }
+            
+            .top-bar .cart-info {
+                display: none;
+            }
+
+            .navbar {
+                width: min(100% - 30px, 1200px);
+                min-height: 65px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                grid-template-columns: none;
+            }
+            
+            .logo {
+                font-size: 28px;
+            }
+            
+            .nav-links {
+                display: flex;
+                gap: 20px;
+            }
+            
+            .nav-links a {
+                font-size: 12px;
+            }
+            
+            .nav-links a.active {
+                padding: 8px 20px;
+            }
+
+            .nav-actions .btn-dark {
+                font-size: 11px;
+                padding: 8px 18px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 40px 20px;
+                min-height: auto;
+            }
+            .hero-text .search-box {
+                margin: 20px auto;
+                max-width: 100%;
+            }
+            .hero-image-area {
+                min-height: 280px;
+                margin-top: 20px;
+            }
+            .hero-woman {
+                width: 300px;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: -15%;
+            }
+            .hero-shadow {
+                width: 550px;
+                left: 30%;
+                transform: translateX(-60%);
+                bottom: -20%;
+            }
+            .hero-image-area::before {
+                width: 390px;
+                height: 390px;
+                right: -43px;
+                bottom: -125px;
+            }
+            .floating-card {
+                width: 140px;
+                font-size: 7px;
+                padding: 6px 10px;
+            }
+            .floating-card strong {
+                font-size: 12px;
+            }
+            .fc-1 {
+                top: 20px;
+                right: 100px;
+            }
+            .fc-2 {
+                top: 120px;
+                right: -5px;
+            }
+            .fc-3 {
+                bottom: 20px;
+                right: 50px;
+            }
+            .deals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .partner-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .faq-visual {
+                grid-template-columns: 1fr;
+            }
+            .visual-step:last-child {
+                grid-column: span 1 !important;
+            }
+            .stats-bar {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                padding: 25px 20px;
+                gap: 20px;
+                border-radius: 12px;
+            }
+            .stat-item h2 {
+                font-size: 26px;
+            }
+            .stat-item p {
+                font-size: 12px;
+            }
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Mobile (max-width: 768px) - Ativa a bottom navigation */
+        @media (max-width: 768px) {
+            /* Remove a navbar normal */
+            .navbar {
+                display: none;
+            }
+
+            /* Top bar simplificada */
+            .header-wrapper {
+                padding-top: 8px;
+            }
+
+            .top-bar {
+                width: 100%;
+                border-radius: 0;
+                border: none;
+                border-bottom: 1px solid #eee;
+                justify-content: center;
+                font-size: 9px;
+                padding: 6px 10px;
+                min-height: 32px;
+                gap: 8px;
+            }
+            
+            .top-bar span:first-child i {
+                font-size: 12px;
+            }
+            
+            .top-bar span:nth-child(2) { 
+                display: none;
+            }
+
+            /* Bottom Navigation - fixa e visível */
+            .bottom-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 65px;
+                background: #ffffff;
+                border-top: 1px solid #e5e5e5;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                z-index: 9999;
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            }
+
+            .bottom-nav a {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+                color: #666;
+                font-size: 10px;
+                transition: 0.2s;
+                padding: 4px 12px;
+                border-radius: 8px;
+                position: relative;
+            }
+
+            .bottom-nav a i {
+                font-size: 20px;
+                transition: 0.2s;
+            }
+
+            .bottom-nav a.active {
+                color: var(--primary-orange);
+            }
+
+            .bottom-nav a.active i {
+                transform: scale(1.1);
+            }
+
+            .bottom-nav a span {
+                font-size: 9px;
+                font-weight: 500;
+            }
+
+            /* Adiciona padding inferior no body para não esconder conteúdo */
+            body {
+                padding-bottom: 75px;
+            }
+
+            /* Ajustes no hero para mobile */
+            .hero {
+                width: calc(100% - 30px);
+                grid-template-columns: 1fr;
+                min-height: auto;
+                padding: 30px 20px;
+                margin-top: 15px;
+                border-radius: 20px;
+            }
+            .hero-text h1 {
+                font-size: 32px;
+            }
+            .hero-image-area {
+                min-height: 260px;
+            }
+            .hero-woman {
+                width: 295px;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: -15%;
+            }
+            .hero-shadow {
+                width: 520px;
+                left: 30%;
+                transform: translateX(-60%);
+                bottom: -15%;
+            }
+            .hero-image-area::before {
+                width: 300px;
+                height: 300px;
+                right: -70px;
+                bottom: -80px;
+            }
+            .floating-card {
+                width: 120px;
+                font-size: 6px;
+                padding: 5px 8px;
+            }
+            .floating-card strong {
+                font-size: 12px;
+            }
+            .fc-1 {
+                top: 0px;
+                right: -9px;
+            }
+            .fc-2 {
+                top: 94px;
+                right: -10px;
+            }
+            .fc-3 {
+                bottom: 10px;
+                right: -10px;
+            }
+
+            .deals-grid {
+                grid-template-columns: 1fr;
+            }
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .app-banner {
+                padding: 25px 15px;
+                text-align: center;
+                flex-direction: column;
+            }
+            .app-banner-content h2 {
+                font-size: 24px;
+            }
+            .app-banner-img {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .app-banner-img img {
+                height: 40px;
+            }
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 20px 15px;
+                gap: 15px;
+            }
+            .stat-item h2 {
+                font-size: 22px;
+            }
+            .faq-section {
+                padding: 20px 15px;
+                border-radius: 15px;
+                flex-direction: column;
+            }
+            .faq-item {
+                font-size: 13px;
+                padding: 12px 15px;
+            }
+            .faq-visual {
+                padding: 20px 15px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .bottom-bar {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .bottom-bar-links {
+                justify-content: center;
+            }
+        }
+
+        /* Telas muito pequenas (max-width: 480px) */
+        @media (max-width: 480px) {
+            .header-wrapper {
+                padding-top: 0;
+            }
+            
+            .top-bar {
+                font-size: 7px;
+                min-height: 24px;
+                padding: 4px 8px;
+                justify-content: center;
+            }
+            
+            .top-bar span:first-child i {
+                font-size: 10px;
+                margin-right: 4px;
+            }
+
+            .hero {
+                width: calc(100% - 15px);
+                padding: 20px 15px;
+                border-radius: 20px;
+                margin: 10px auto;
+                gap: 15px;
+            }
+            
+            .hero-text h1 {
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+            
+            .hero-text p {
+                font-size: 12px;
+                margin-bottom: 5px;
+            }
+            
+            .hero-text .search-box {
+                max-width: 100%;
+                margin-top: 10px;
+                padding: 3px;
+                border-radius: 25px;
+            }
+            
+            .hero-text .search-box input {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+            .hero-text .search-box .btn-primary {
+                padding: 8px 16px;
+                font-size: 11px;
+                border-radius: 25px;
+            }
+
+            .hero-image-area {
+                min-height: 180px;
+                margin-top: 10px;
+            }
+            
+            .hero-woman {
+                width: 190px;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: -12%;
+            }
+            
+            .hero-shadow {
+                width: 340px;
+                left: 17%;
+                transform: translateX(-50%);
+                bottom: -12%;
+            }
+            
+            .hero-image-area::before {
+                width: 190px;
+                height: 190px;
+                right: -45px;
+                bottom: -35px;
+            }
+
+            .floating-card {
+                width: 85px;
+                padding: 4px 6px;
+                border-radius: 6px;
+                font-size: 5px;
+                box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            }
+            
+            .floating-card strong {
+                font-size: 12px;
+            }
+            
+            .floating-card small {
+                font-size: 7px;
+            }
+            
+            .floating-card i {
+                font-size: 10px;
+            }
+            
+            .fc-1 {
+                top: 5px;
+                right: 0px;
+            }
+            
+            .fc-2 {
+                top: 75px;
+                right: -8px;
+            }
+            
+            .fc-3 {
+                bottom: 5px;
+                right: 0px;
+            }
+
+            .bottom-nav {
+                height: 58px;
+            }
+
+            .bottom-nav a i {
+                font-size: 18px;
+            }
+
+            .bottom-nav a span {
+                font-size: 8px;
+            }
+
+            .bottom-nav a {
+                padding: 2px 8px;
+            }
+
+            body {
+                padding-bottom: 68px;
+            }
+
+            .section-header {
+                margin: 20px 0 15px;
+                gap: 10px;
+            }
+            
+            .section-header h2 {
+                font-size: 16px;
+            }
+            
+            .section-header h2 i {
+                font-size: 14px;
+            }
+            
+            .filters {
+                gap: 8px;
+            }
+            
+            .filters span {
+                font-size: 10px;
+                padding: 3px 10px;
+                border-radius: 15px;
+            }
+
+            .deals-grid {
+                gap: 12px;
+            }
+            
+            .deal-card {
+                height: 180px;
+                border-radius: 12px;
+            }
+            
+            .deal-info {
+                padding: 12px 15px;
+            }
+            
+            .deal-info h3 {
+                font-size: 14px;
+            }
+            
+            .deal-info p {
+                font-size: 10px !important;
+            }
+            
+            .deal-badge {
+                font-size: 11px;
+                padding: 3px 8px;
+                top: 10px;
+                right: 10px;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                margin-top: 15px;
+            }
+            
+            .category-card {
+                padding: 10px 8px;
+                border-radius: 12px;
+            }
+            
+            .category-card img {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 6px;
+            }
+            
+            .category-card h4 {
+                font-size: 11px;
+                margin-bottom: 2px;
+            }
+            
+            .category-card p {
+                font-size: 9px;
+            }
+
+            .restaurants-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                margin: 15px 0;
+            }
+            
+            .restaurant-logo {
+                padding: 12px 8px;
+                border-radius: 8px;
+            }
+            
+            .restaurant-logo i {
+                font-size: 28px !important;
+            }
+            
+            .restaurant-logo p {
+                font-size: 10px;
+                margin-top: 4px;
+            }
+
+            .app-banner {
+                padding: 20px 15px;
+                border-radius: 15px;
+                margin: 25px auto;
+                gap: 15px;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .app-banner-content {
+                min-width: auto;
+                width: 100%;
+            }
+            
+            .app-banner-content h2 {
+                font-size: 18px;
+            }
+            
+            .app-banner-content .badge-dark {
+                font-size: 10px;
+                padding: 4px 12px;
+                margin-bottom: 10px;
+            }
+            
+            .app-banner-img {
+                min-width: auto;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .app-banner-img img {
+                height: 32px;
+            }
+
+            .partner-grid {
+                gap: 12px;
+                margin-bottom: 25px;
+            }
+            
+            .partner-card {
+                min-height: 160px;
+                height: 180px;
+                border-radius: 12px;
+            }
+            
+            .partner-overlay {
+                padding: 18px 15px;
+            }
+            
+            .partner-overlay h3 {
+                font-size: 16px;
+                margin-bottom: 6px;
+            }
+            
+            .partner-overlay .badge-white {
+                font-size: 9px;
+                padding: 3px 8px;
+                margin-bottom: 10px;
+            }
+            
+            .partner-overlay .btn-primary {
+                padding: 6px 16px;
+                font-size: 11px;
+                border-radius: 25px;
+            }
+
+            .stats-bar {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                padding: 15px 12px;
+                border-radius: 12px;
+                margin: 20px auto;
+            }
+            
+            .stat-item h2 {
+                font-size: 18px;
+            }
+            
+            .stat-item p {
+                font-size: 9px;
+            }
+
+            .faq-section {
+                padding: 15px 12px;
+                border-radius: 12px;
+                gap: 20px;
+                margin-bottom: 25px;
+                flex-direction: column;
+            }
+            
+            .faq-list {
+                min-width: auto;
+            }
+            
+            .faq-list h2 {
+                font-size: 16px;
+                margin-bottom: 12px !important;
+            }
+            
+            .faq-item {
+                font-size: 11px;
+                padding: 10px 14px;
+                border-radius: 25px;
+                margin-bottom: 6px;
+            }
+            
+            .faq-item i {
+                font-size: 10px;
+            }
+            
+            .faq-visual {
+                padding: 15px 12px;
+                border-radius: 15px;
+                gap: 12px;
+            }
+            
+            .visual-step .icon-box {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                font-size: 16px;
+                margin: 0 auto 10px;
+            }
+            
+            .visual-step h4 {
+                font-size: 11px;
+            }
+            
+            .visual-step p {
+                font-size: 9px;
+            }
+            
+            .visual-step:last-child {
+                padding-top: 12px;
+                margin-top: 5px;
+            }
+            
+            .visual-step:last-child .icon-box {
+                display: inline-flex !important;
+                width: 35px;
+                height: 35px;
+            }
+            
+            .visual-step:last-child h4 {
+                display: inline-block !important;
+                margin-left: 8px;
+                font-size: 12px;
+            }
+            
+            .visual-step:last-child p {
+                margin-left: 45px;
+                font-size: 9px;
+            }
+
+            footer {
+                padding: 30px 0 15px;
+                margin-top: 20px;
+            }
+            
+            .footer-grid {
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .footer-logo h2 {
+                font-size: 24px;
+            }
+            
+            .footer-logo p {
+                font-size: 10px;
+                margin: 10px 0;
+            }
+            
+            .store-buttons img {
+                height: 30px;
+                margin-right: 5px;
+                margin-bottom: 5px;
+            }
+            
+            .footer-logo > div {
+                font-size: 16px !important;
+            }
+            
+            .newsletter h4 {
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+            
+            .newsletter-form {
+                gap: 8px;
+            }
+            
+            .newsletter-form input {
+                padding: 8px 12px;
+                font-size: 11px;
+                min-width: 100px;
+                flex: 1 1 100%;
+            }
+            
+            .newsletter-form .btn-primary {
+                padding: 8px 16px;
+                font-size: 11px;
+                flex: 1 1 100%;
+            }
+            
+            .newsletter p {
+                font-size: 9px !important;
+                margin-top: 6px !important;
+            }
+            
+            .footer-links h4 {
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+            
+            .footer-links ul li {
+                margin-bottom: 6px;
+            }
+            
+            .footer-links ul li a {
+                font-size: 11px;
+            }
+            
+            .bottom-bar {
+                font-size: 9px;
+                padding-top: 12px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 8px;
+            }
+            
+            .bottom-bar-links {
+                gap: 10px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .bottom-bar-links a {
+                font-size: 9px;
+            }
+
+            h2 {
+                font-size: 18px !important;
+            }
+            
+            .container h2 {
+                font-size: 18px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER WRAPPER -->
+    <div class="header-wrapper">
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <span><i class="fas fa-gift"></i> Get 5% OFF your first order. Promo: ORDER25</span>
+            <span><i class="fas fa-map-marker-alt"></i> Regent Street, W1B, London</span>
+            <div class="cart-info">
+                <span><i class="fas fa-shopping-bag"></i> 23 items</span>
+                <span>GBP 70.89</span>
+                <span><i class="fas fa-user-circle"></i></span>
+            </div>
+        </div>
+
+        <!-- NAVBAR (Desktop) -->
+        <nav class="container navbar">
+            <div class="logo">Order<span>.uk</span></div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Browse Menu</a></li>
+                <li><a href="#">Special Offers</a></li>
+                <li><a href="#">Restaurants</a></li>
+                <li><a href="#">Track Order</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-dark"><i class="fas fa-user"></i> Login/Signup</button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- BOTTOM NAV (Mobile) -->
+    <nav class="bottom-nav">
+        <a href="#" class="active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-utensils"></i>
+            <span>Menu</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-store"></i>
+            <span>Lojas</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-user"></i>
+            <span>Conta</span>
+        </a>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="container hero">
+        <div class="hero-text">
+            <p>Order Restaurant food, takeaway and groceries.</p>
+            <h1>Feast Your Senses,<br><span>Fast and Fresh</span></h1>
+            <p style="font-size: 14px; color: #aaa;">Enter postcode to see what we deliver</p>
+            <div class="search-box">
+                <input type="text" placeholder="e.g. EC4R 3TE">
+                <button class="btn-primary">Search</button>
+            </div>
+        </div>
+        <div class="hero-image-area">
+            <img class="hero-shadow" src="./assets/img2.png" alt="" aria-hidden="true">
+            <img class="hero-woman" src="./assets/img1.png" alt="Woman holding pizza">
+            <div class="floating-card fc-1">
+                <strong>Orders</strong>
+                <small>We've received your order!</small>
+            </div>
+            <div class="floating-card fc-2">
+                <strong>Orders</strong>
+                <small>Order Accepted <i class="fas fa-check-circle"></i></small>
+            </div>
+            <div class="floating-card fc-3">
+                <strong>Orders</strong>
+                <small>Out for delivery <i class="fas fa-motorcycle"></i></small>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEALS SECTION -->
+    <div class="container">
+        <div class="section-header">
+            <h2>Up to -40% <i class="fas fa-bolt"></i> Order.uk exclusive deals</h2>
+            <div class="filters">
+                <span>Vegan</span>
+                <span>Sushi</span>
+                <span class="active">Pizza & Fast food</span>
+                <span>Others</span>
+            </div>
+        </div>
+        <div class="deals-grid">
+            <div class="deal-card">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Burger" loading="lazy">
+                <div class="deal-badge">-40%</div>
+                <div class="deal-info">
+                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <h3>Chef Burgers London</h3>
+                </div>
+            </div>
+            <div class="deal-card">
+                <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Pasta" loading="lazy">
+                <div class="deal-badge">-20%</div>
+                <div class="deal-info">
+                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <h3>Grand Ai Cafe London</h3>
+                </div>
+            </div>
+            <div class="deal-card">
+                <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Salad" loading="lazy">
+                <div class="deal-badge">-35%</div>
+                <div class="deal-info">
+                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <h3>Butterbrot Cafe London</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPULAR CATEGORIES -->
+    <div class="container">
+        <div class="section-header">
+            <h2>Order.uk Popular Categories <i class="far fa-smile-wink"></i></h2>
+        </div>
+        <div class="categories-grid">
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Burger" loading="lazy">
+                <h4>Burger & Fast food</h4>
+                <p>6 Restaurants</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Salad" loading="lazy">
+                <h4>Salads</h4>
+                <p>10 Restaurants</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Pasta" loading="lazy">
+                <h4>Pasta & Canals</h4>
+                <p>12 Restaurants</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Pizza" loading="lazy">
+                <h4>Pizza</h4>
+                <p>8 Restaurants</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1513442542250-854d436a73f2?q=80&w=647&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Breakfast" loading="lazy">
+                <h4>Breakfast</h4>
+                <p>15 Restaurants</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Soup" loading="lazy">
+                <h4>Soup</h4>
+                <p>5 Restaurants</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPULAR RESTAURANTS -->
+    <div class="container">
+        <h2 style="margin-top: 40px; font-size: 24px;">Popular Restaurants</h2>
+        <div class="restaurants-grid">
+            <div class="restaurant-logo" style="background: #da291c; color: white;">
+                <i class="fas fa-hamburger" style="font-size: 40px;"></i>
+                <p>McDonald's London</p>
+            </div>
+            <div class="restaurant-logo" style="background: #007b3d; color: white;">
+                <i class="fas fa-pizza-slice" style="font-size: 40px;"></i>
+                <p>Papa Johns</p>
+            </div>
+            <div class="restaurant-logo" style="background: #d30000; color: white;">
+                <i class="fas fa-drumstick-bite" style="font-size: 40px;"></i>
+                <p>KFC West London</p>
+            </div>
+            <div class="restaurant-logo" style="background: #ff6600; color: white;">
+                <i class="fas fa-utensils" style="font-size: 40px;"></i>
+                <p>Texas Chicken</p>
+            </div>
+            <div class="restaurant-logo" style="background: #d62300; color: white;">
+                <i class="fas fa-crown" style="font-size: 40px;"></i>
+                <p>Burger King</p>
+            </div>
+            <div class="restaurant-logo" style="background: #f7941d; color: white;">
+                <i class="fas fa-concierge-bell" style="font-size: 40px;"></i>
+                <p>Shaurma 1</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- APP BANNER -->
+    <div class="container app-banner">
+        <div class="app-banner-content">
+            <h2>Ordering is more<br><span>Personalised & Instant</span></h2>
+            <div class="badge-dark">Download the Order.uk app for faster ordering</div>
+        </div>
+        <div class="app-banner-img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" loading="lazy">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" loading="lazy">
+        </div>
+    </div>
+
+    <!-- PARTNER SECTIONS -->
+    <div class="container partner-grid">
+        <div class="partner-card">
+            <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=869&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Partner" loading="lazy">
+            <div class="partner-overlay">
+                <div class="badge-white">Earn more with lower fees</div>
+                <h3>Partner with us</h3>
+                <button class="btn-primary">Get Started</button>
+            </div>
+        </div>
+        <div class="partner-card">
+            <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Rider" loading="lazy">
+            <div class="partner-overlay">
+                <div class="badge-white">Avail exclusive perks</div>
+                <h3>Ride with us</h3>
+                <button class="btn-primary">Get Started</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="container stats-bar">
+        <div class="stat-item">
+            <h2>546+</h2>
+            <p>Registered Riders</p>
+        </div>
+        <div class="stat-item">
+            <h2>789,900+</h2>
+            <p>Orders Delivered</p>
+        </div>
+        <div class="stat-item">
+            <h2>690+</h2>
+            <p>Restaurants Partnered</p>
+        </div>
+        <div class="stat-item">
+            <h2>17,457+</h2>
+            <p>Food Items</p>
+        </div>
+    </div>
+
+    <!-- FAQ SECTION -->
+    <div class="container faq-section">
+        <div class="faq-list">
+            <h2 style="margin-bottom: 20px;">Know more about us!</h2>
+            <div class="faq-item active">How does Order.uk work? <i class="fas fa-minus"></i></div>
+            <div class="faq-item">What payment methods are accepted? <i class="fas fa-plus"></i></div>
+            <div class="faq-item">Can I track my order in real-time? <i class="fas fa-plus"></i></div>
+            <div class="faq-item">Are there any special discounts or promotions available? <i class="fas fa-plus"></i></div>
+            <div class="faq-item">Is Order.uk available in my area? <i class="fas fa-plus"></i></div>
+        </div>
+        <div class="faq-visual">
+            <div class="visual-step">
+                <div class="icon-box"><i class="fas fa-cart-plus" style="color: #FF9800;"></i></div>
+                <h4>Place an Order</h4>
+                <p>Place order through our website or mobile app</p>
+            </div>
+            <div class="visual-step">
+                <div class="icon-box"><i class="fas fa-truck" style="color: #FF9800;"></i></div>
+                <h4>Track Progress</h4>
+                <p>You can track your order status with delivery time</p>
+            </div>
+            <div class="visual-step" style="grid-column: span 2; text-align: left; margin-top: 10px; border-top: 1px solid #333; padding-top: 20px;">
+                <div class="icon-box" style="display: inline-flex;"><i class="fas fa-check-circle" style="color: #4CAF50;"></i></div>
+                <h4 style="display: inline-block; margin-left: 15px;">Get your Order!</h4>
+                <p style="margin-left: 75px;">Receive your order at a lightning fast speed!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-logo">
+                <h2>Order<span>.uk</span></h2>
+                <p>Company # 402483-UK, registered in<br>house of companies.</p>
+                <div class="store-buttons">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" loading="lazy">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" loading="lazy">
+                </div>
+                <div style="margin-top: 15px; font-size: 20px; color: #333;">
+                    <i class="fab fa-facebook"></i> &nbsp; <i class="fab fa-twitter"></i> &nbsp; <i class="fab fa-instagram"></i> &nbsp; <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+
+            <div class="newsletter">
+                <h4>Get Exclusive Deals in your inbox</h4>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="your.email@example.com">
+                    <button class="btn-primary">Subscribe</button>
+                </div>
+                <p style="font-size: 12px; margin-top: 10px; color: #777;">We won't spam, read our Privacy Policy</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Legal Pages</h4>
+                <ul>
+                    <li><a href="#">Terms and conditions</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Cookies</a></li>
+                    <li><a href="#">Modern Slavery Statement</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Important links</h4>
+                <ul>
+                    <li><a href="#">Get help</a></li>
+                    <li><a href="#">Add your restaurant</a></li>
+                    <li><a href="#">Sign up to deliver</a></li>
+                    <li><a href="#">Create a business account</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container bottom-bar">
+            <span>Order.uk Copyright 2026. All rights Reserved.</span>
+            <div class="bottom-bar-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+                <a href="#">Pricing</a>
+                <a href="#">Do not sell or share my personal information</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script para ativar/desativar item ativo na bottom nav -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bottom Nav - marca item ativo ao clicar
+            const bottomNavLinks = document.querySelectorAll('.bottom-nav a');
+            
+            bottomNavLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Remove active de todos
+                    bottomNavLinks.forEach(l => l.classList.remove('active'));
+                    // Adiciona active no clicado
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
