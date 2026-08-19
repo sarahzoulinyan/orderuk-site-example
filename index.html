@@ -211,6 +211,10 @@
             font-size: 10px;
             font-weight: 500;
             flex-shrink: 0;
+            cursor: pointer;
+        }
+        .top-bar .cart-info:hover {
+            opacity: 0.9;
         }
 
         .navbar {
@@ -314,6 +318,15 @@
             flex: 1;
             outline: none;
             background: transparent;
+        }
+        .search-result-feedback {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+            min-height: 24px;
+        }
+        .search-result-feedback strong {
+            color: var(--primary-orange);
         }
 
         .hero-image-area {
@@ -428,6 +441,11 @@
             border-radius: 20px;
             font-size: 13px;
             cursor: pointer;
+            transition: 0.2s;
+            user-select: none;
+        }
+        .filters span:hover {
+            background: #f5f5f5;
         }
         .filters span.active {
             background: white;
@@ -446,6 +464,10 @@
             position: relative;
             height: 250px;
             cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .deal-card:hover {
+            transform: translateY(-4px);
         }
         .deal-card img {
             width: 100%;
@@ -489,6 +511,11 @@
             text-align: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             cursor: pointer;
+            transition: 0.2s;
+        }
+        .category-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
         .category-card img {
             width: 80px;
@@ -519,6 +546,12 @@
             padding: 20px 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             border: 1px solid #eee;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .restaurant-logo:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         .restaurant-logo p {
             font-size: 12px;
@@ -667,7 +700,29 @@
         .faq-item:hover:not(.active) {
             background: #eee;
         }
-        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease, opacity 0.3s ease;
+            padding: 0 20px;
+            opacity: 0;
+            background: #fff;
+            border-radius: 0 0 20px 20px;
+            margin-top: -6px;
+            margin-bottom: 6px;
+        }
+        .faq-answer.open {
+            max-height: 200px;
+            padding: 15px 20px;
+            opacity: 1;
+        }
+        .faq-answer p {
+            font-size: 14px;
+            color: #444;
+            line-height: 1.6;
+            margin: 0;
+        }
+
         .faq-visual {
             flex: 1.5;
             background: var(--dark-navy);
@@ -746,6 +801,19 @@
             border-radius: 5px;
             flex: 1;
             min-width: 150px;
+            outline: none;
+        }
+        .newsletter-form input:focus {
+            border-color: var(--primary-orange);
+        }
+        .newsletter-feedback {
+            font-size: 12px;
+            margin-top: 8px;
+            min-height: 20px;
+            color: var(--green-success);
+        }
+        .newsletter-feedback.error {
+            color: #dc3545;
         }
 
         .footer-links h4 {
@@ -778,6 +846,154 @@
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
+        }
+
+        /* ==========================================================
+           CARRINHO LATERAL (DRAWER)
+           ========================================================== */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            max-width: 90vw;
+            height: 100vh;
+            background: #fff;
+            z-index: 100000;
+            box-shadow: -4px 0 25px rgba(0,0,0,0.15);
+            transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 25px 20px;
+        }
+        .cart-drawer.open {
+            right: 0;
+        }
+        .cart-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            z-index: 99999;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+        .cart-drawer-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        .cart-header h3 {
+            font-size: 20px;
+        }
+        .cart-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
+            transition: 0.2s;
+            padding: 0 8px;
+        }
+        .cart-close:hover {
+            color: #111;
+        }
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 0;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .cart-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .cart-item-price {
+            font-size: 13px;
+            color: #555;
+        }
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .cart-item-controls button {
+            background: #f0f0f0;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-item-controls button:hover {
+            background: #ddd;
+        }
+        .cart-item-qty {
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+        }
+        .cart-footer {
+            border-top: 1px solid #eee;
+            padding-top: 18px;
+        }
+        .cart-subtotal {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .cart-checkout-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-orange);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .cart-checkout-btn:hover {
+            background: #e68a00;
+            transform: scale(1.02);
+        }
+        .cart-empty {
+            text-align: center;
+            color: #999;
+            padding: 40px 0;
+            font-size: 16px;
+        }
+        .cart-empty i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 15px;
+            display: block;
         }
 
         /* ========================================================== */
@@ -964,6 +1180,7 @@
             .footer-grid { grid-template-columns: 1fr; gap: 30px; }
             .bottom-bar { flex-direction: column; align-items: center; text-align: center; }
             .bottom-bar-links { justify-content: center; }
+            .cart-drawer { width: 100%; max-width: 100%; right: -100%; }
         }
 
         @media (max-width: 480px) {
@@ -1151,16 +1368,45 @@
     </div>
 
     <!-- ==============================================================
-    CONTEÚDO PRINCIPAL (mantido original)
+    OVERLAY DO CARRINHO
+    ============================================================== -->
+    <div class="cart-drawer-overlay" id="cartOverlay"></div>
+
+    <!-- ==============================================================
+    CARRINHO LATERAL
+    ============================================================== -->
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-bag" style="color: var(--primary-orange);"></i> Your Order</h3>
+            <button class="cart-close" id="cartClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <i class="fas fa-shopping-cart"></i>
+                Your cart is empty
+                <p style="font-size: 14px; margin-top: 8px;">Add items from our deals!</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-subtotal">
+                <span>Subtotal</span>
+                <span id="cartTotal">£0.00</span>
+            </div>
+            <button class="cart-checkout-btn" id="checkoutBtn">Continue to checkout</button>
+        </div>
+    </div>
+
+    <!-- ==============================================================
+    CONTEÚDO PRINCIPAL
     ============================================================== -->
 
     <div class="header-wrapper">
         <div class="top-bar">
             <span><i class="fas fa-gift"></i> Get 5% OFF your first order. Promo: ORDER25</span>
             <span><i class="fas fa-map-marker-alt"></i> Regent Street, W1B, London</span>
-            <div class="cart-info">
-                <span><i class="fas fa-shopping-bag"></i> 23 items</span>
-                <span>GBP 70.89</span>
+            <div class="cart-info" id="cartToggle">
+                <span><i class="fas fa-shopping-bag"></i> <span id="cartCount">0</span> items</span>
+                <span>GBP <span id="cartMiniTotal">0.00</span></span>
                 <span><i class="fas fa-user-circle"></i></span>
             </div>
         </div>
@@ -1193,9 +1439,10 @@
             <h1>Feast Your Senses,<br><span>Fast and Fresh</span></h1>
             <p style="font-size: 14px; color: #aaa;">Enter postcode to see what we deliver</p>
             <div class="search-box">
-                <input type="text" placeholder="e.g. EC4R 3TE">
-                <button class="btn-primary">Search</button>
+                <input type="text" id="postcodeInput" placeholder="e.g. EC4R 3TE">
+                <button class="btn-primary" id="searchBtn">Search</button>
             </div>
+            <div class="search-result-feedback" id="searchFeedback"></div>
         </div>
         <div class="hero-image-area">
             <img class="hero-shadow" src="./assets/img2.png" alt="" aria-hidden="true">
@@ -1218,36 +1465,73 @@
     <div class="container">
         <div class="section-header">
             <h2>Up to -40% <i class="fas fa-bolt"></i> Order.uk exclusive deals</h2>
-            <div class="filters">
-                <span>Vegan</span>
-                <span>Sushi</span>
-                <span class="active">Pizza & Fast food</span>
-                <span>Others</span>
+            <div class="filters" id="filterContainer">
+                <span data-filter="all" class="active">All</span>
+                <span data-filter="vegan">Vegan</span>
+                <span data-filter="sushi">Sushi</span>
+                <span data-filter="pizza">Pizza & Fast food</span>
+                <span data-filter="others">Others</span>
             </div>
         </div>
-        <div class="deals-grid">
-            <div class="deal-card">
+        <div class="deals-grid" id="dealsGrid">
+            <div class="deal-card" data-category="pizza" data-name="Chef Burgers London" data-price="12.90">
                 <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=80" alt="Burger" loading="lazy">
                 <div class="deal-badge">-40%</div>
                 <div class="deal-info">
                     <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
                     <h3>Chef Burgers London</h3>
+                    <p style="font-size: 13px; font-weight: 600;">£12.90</p>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
                 </div>
             </div>
-            <div class="deal-card">
+            <div class="deal-card" data-category="pizza" data-name="Grand Ai Cafe London" data-price="14.50">
                 <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=500&q=80" alt="Pasta" loading="lazy">
                 <div class="deal-badge">-20%</div>
                 <div class="deal-info">
                     <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
                     <h3>Grand Ai Cafe London</h3>
+                    <p style="font-size: 13px; font-weight: 600;">£14.50</p>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
                 </div>
             </div>
-            <div class="deal-card">
+            <div class="deal-card" data-category="vegan" data-name="Butterbrot Cafe London" data-price="9.90">
                 <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&q=80" alt="Salad" loading="lazy">
                 <div class="deal-badge">-35%</div>
                 <div class="deal-info">
                     <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
                     <h3>Butterbrot Cafe London</h3>
+                    <p style="font-size: 13px; font-weight: 600;">£9.90</p>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
+                </div>
+            </div>
+            <div class="deal-card" data-category="sushi" data-name="Sushi House" data-price="18.20">
+                <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500&q=80" alt="Sushi" loading="lazy">
+                <div class="deal-badge">-15%</div>
+                <div class="deal-info">
+                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <h3>Sushi House</h3>
+                    <p style="font-size: 13px; font-weight: 600;">£18.20</p>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
+                </div>
+            </div>
+            <div class="deal-card" data-category="others" data-name="Taco Bell" data-price="11.30">
+                <img src="https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=500&q=80" alt="Tacos" loading="lazy">
+                <div class="deal-badge">-25%</div>
+                <div class="deal-info">
+                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <h3>Taco Bell</h3>
+                    <p style="font-size: 13px; font-weight: 600;">£11.30</p>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
+                </div>
+            </div>
+            <div class="deal-card" data-category="vegan" data-name="Green Kitchen" data-price="13.70">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80" alt="Vegan Bowl" loading="lazy">
+                <div class="deal-badge">-30%</div>
+                <div class="deal-info">
+                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <h3>Green Kitchen</h3>
+                    <p style="font-size: 13px; font-weight: 600;">£13.70</p>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -1373,11 +1657,36 @@
     <div class="container faq-section">
         <div class="faq-list">
             <h2 style="margin-bottom: 20px;">Know more about us!</h2>
-            <div class="faq-item active">How does Order.uk work? <i class="fas fa-minus"></i></div>
-            <div class="faq-item">What payment methods are accepted? <i class="fas fa-plus"></i></div>
-            <div class="faq-item">Can I track my order in real-time? <i class="fas fa-plus"></i></div>
-            <div class="faq-item">Are there any special discounts or promotions available? <i class="fas fa-plus"></i></div>
-            <div class="faq-item">Is Order.uk available in my area? <i class="fas fa-plus"></i></div>
+            <div class="faq-item active" data-target="faq1">
+                How does Order.uk work? <i class="fas fa-minus"></i>
+            </div>
+            <div class="faq-answer open" id="faq1">
+                <p>Choose a restaurant, add your favorite items to the cart and complete your order. You can then follow the delivery status in real time.</p>
+            </div>
+            <div class="faq-item" data-target="faq2">
+                What payment methods are accepted? <i class="fas fa-plus"></i>
+            </div>
+            <div class="faq-answer" id="faq2">
+                <p>We accept all major credit and debit cards, PayPal, Apple Pay, and Google Pay. Cash payment is also available in selected areas.</p>
+            </div>
+            <div class="faq-item" data-target="faq3">
+                Can I track my order in real-time? <i class="fas fa-plus"></i>
+            </div>
+            <div class="faq-answer" id="faq3">
+                <p>Yes! Once your order is confirmed, you can track the delivery status live on our website or mobile app, from preparation to your doorstep.</p>
+            </div>
+            <div class="faq-item" data-target="faq4">
+                Are there any special discounts or promotions available? <i class="fas fa-plus"></i>
+            </div>
+            <div class="faq-answer" id="faq4">
+                <p>We regularly offer exclusive deals and discounts. Check our "Special Offers" section and subscribe to our newsletter to stay updated.</p>
+            </div>
+            <div class="faq-item" data-target="faq5">
+                Is Order.uk available in my area? <i class="fas fa-plus"></i>
+            </div>
+            <div class="faq-answer" id="faq5">
+                <p>We are expanding rapidly! Enter your postcode in the search box on the homepage to see if we deliver to your area.</p>
+            </div>
         </div>
         <div class="faq-visual">
             <div class="visual-step">
@@ -1415,10 +1724,11 @@
             <div class="newsletter">
                 <h4>Get Exclusive Deals in your inbox</h4>
                 <div class="newsletter-form">
-                    <input type="email" placeholder="your.email@example.com">
-                    <button class="btn-primary">Subscribe</button>
+                    <input type="email" id="newsletterEmail" placeholder="your.email@example.com">
+                    <button class="btn-primary" id="newsletterBtn">Subscribe</button>
                 </div>
-                <p style="font-size: 12px; margin-top: 10px; color: #777;">We won't spam, read our Privacy Policy</p>
+                <div class="newsletter-feedback" id="newsletterFeedback"></div>
+                <p style="font-size: 12px; margin-top: 6px; color: #777;">We won't spam, read our Privacy Policy</p>
             </div>
 
             <div class="footer-links">
@@ -1460,8 +1770,6 @@
             // LOADING RÁPIDO — SAI EM 1.4s
             // ==========================================================
             const entryScreen = document.getElementById('order-entry-screen');
-
-            // A animação dura ~1.4s, então some depois disso
             setTimeout(() => {
                 entryScreen.classList.add('entry-hidden');
                 setTimeout(() => {
@@ -1480,20 +1788,245 @@
             });
 
             // ==========================================================
-            // FAQ — toggle + ícone
+            // FAQ — com conteúdo expansível
             // ==========================================================
-            document.querySelectorAll('.faq-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('active'));
-                    this.classList.add('active');
+            const faqItems = document.querySelectorAll('.faq-item');
+            const faqAnswers = document.querySelectorAll('.faq-answer');
 
-                    const icon = this.querySelector('i');
-                    document.querySelectorAll('.faq-item i').forEach(i => {
-                        i.classList.remove('fa-minus');
-                        i.classList.add('fa-plus');
+            faqItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    const answer = document.getElementById(targetId);
+                    const isActive = this.classList.contains('active');
+
+                    // Fecha todos
+                    faqItems.forEach(f => {
+                        f.classList.remove('active');
+                        const icon = f.querySelector('i');
+                        icon.classList.remove('fa-minus');
+                        icon.classList.add('fa-plus');
                     });
-                    icon.classList.remove('fa-plus');
-                    icon.classList.add('fa-minus');
+                    faqAnswers.forEach(a => a.classList.remove('open'));
+
+                    if (!isActive) {
+                        this.classList.add('active');
+                        const icon = this.querySelector('i');
+                        icon.classList.remove('fa-plus');
+                        icon.classList.add('fa-minus');
+                        if (answer) answer.classList.add('open');
+                    }
+                });
+            });
+
+            // ==========================================================
+            // FILTROS — funcional
+            // ==========================================================
+            const filterSpans = document.querySelectorAll('#filterContainer span');
+            const dealCards = document.querySelectorAll('.deal-card');
+
+            filterSpans.forEach(span => {
+                span.addEventListener('click', function() {
+                    filterSpans.forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+                    const filter = this.dataset.filter;
+
+                    dealCards.forEach(card => {
+                        if (filter === 'all' || card.dataset.category === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // ==========================================================
+            // BUSCA POR POSTCODE — simulação
+            // ==========================================================
+            const searchBtn = document.getElementById('searchBtn');
+            const postcodeInput = document.getElementById('postcodeInput');
+            const searchFeedback = document.getElementById('searchFeedback');
+
+            searchBtn.addEventListener('click', function() {
+                const code = postcodeInput.value.trim();
+                if (!code) {
+                    searchFeedback.innerHTML = '⚠️ Please enter a postcode.';
+                    return;
+                }
+                // Simulação de busca
+                const found = Math.floor(Math.random() * 15) + 5;
+                searchFeedback.innerHTML = `✅ We found <strong>${found}</strong> restaurants near <strong>${code}</strong>`;
+                searchFeedback.style.color = '#aaa';
+            });
+
+            postcodeInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') searchBtn.click();
+            });
+
+            // ==========================================================
+            // CARRINHO — funcional completo
+            // ==========================================================
+            let cart = [];
+            const cartDrawer = document.getElementById('cartDrawer');
+            const cartOverlay = document.getElementById('cartOverlay');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartCount = document.getElementById('cartCount');
+            const cartMiniTotal = document.getElementById('cartMiniTotal');
+
+            function updateCartUI() {
+                // Atualiza contador
+                const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+                cartCount.textContent = totalItems;
+
+                // Atualiza mini total
+                const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                cartMiniTotal.textContent = totalPrice.toFixed(2);
+
+                // Renderiza itens
+                if (cart.length === 0) {
+                    cartItems.innerHTML = `
+                        <div class="cart-empty">
+                            <i class="fas fa-shopping-cart"></i>
+                            Your cart is empty
+                            <p style="font-size: 14px; margin-top: 8px;">Add items from our deals!</p>
+                        </div>
+                    `;
+                    cartTotal.textContent = '£0.00';
+                    return;
+                }
+
+                let html = '';
+                cart.forEach((item, index) => {
+                    html += `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <span class="cart-item-name">${item.name}</span>
+                                <span class="cart-item-price">£${item.price.toFixed(2)}</span>
+                            </div>
+                            <div class="cart-item-controls">
+                                <button onclick="changeQty(${index}, -1)">−</button>
+                                <span class="cart-item-qty">${item.qty}</span>
+                                <button onclick="changeQty(${index}, 1)">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                cartItems.innerHTML = html;
+                cartTotal.textContent = `£${totalPrice.toFixed(2)}`;
+            }
+
+            window.changeQty = function(index, delta) {
+                if (cart[index]) {
+                    cart[index].qty += delta;
+                    if (cart[index].qty <= 0) {
+                        cart.splice(index, 1);
+                    }
+                    updateCartUI();
+                }
+            };
+
+            function addToCart(name, price) {
+                const existing = cart.find(item => item.name === name);
+                if (existing) {
+                    existing.qty += 1;
+                } else {
+                    cart.push({ name, price, qty: 1 });
+                }
+                updateCartUI();
+                // Abre o carrinho rapidamente para feedback
+                openCart();
+            }
+
+            function openCart() {
+                cartDrawer.classList.add('open');
+                cartOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeCart() {
+                cartDrawer.classList.remove('open');
+                cartOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            // Eventos do carrinho
+            document.getElementById('cartToggle').addEventListener('click', openCart);
+            document.getElementById('cartClose').addEventListener('click', closeCart);
+            cartOverlay.addEventListener('click', closeCart);
+
+            // Adicionar ao carrinho via botões
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const card = this.closest('.deal-card');
+                    const name = card.dataset.name;
+                    const price = parseFloat(card.dataset.price);
+                    addToCart(name, price);
+                });
+            });
+
+            // Checkout
+            document.getElementById('checkoutBtn').addEventListener('click', function() {
+                if (cart.length === 0) {
+                    alert('Your cart is empty! Add some items first.');
+                    return;
+                }
+                alert('✅ Thank you! Your order has been placed. (Simulated checkout)');
+                cart = [];
+                updateCartUI();
+                closeCart();
+            });
+
+            // ==========================================================
+            // NEWSLETTER — validação e feedback
+            // ==========================================================
+            const newsletterEmail = document.getElementById('newsletterEmail');
+            const newsletterBtn = document.getElementById('newsletterBtn');
+            const newsletterFeedback = document.getElementById('newsletterFeedback');
+
+            newsletterBtn.addEventListener('click', function() {
+                const email = newsletterEmail.value.trim();
+                if (!email) {
+                    newsletterFeedback.textContent = '⚠️ Please enter your email address.';
+                    newsletterFeedback.className = 'newsletter-feedback error';
+                    return;
+                }
+                if (!email.includes('@') || !email.includes('.')) {
+                    newsletterFeedback.textContent = '⚠️ Please enter a valid email address.';
+                    newsletterFeedback.className = 'newsletter-feedback error';
+                    return;
+                }
+                newsletterFeedback.textContent = '✅ You\'re subscribed!';
+                newsletterFeedback.className = 'newsletter-feedback';
+                newsletterEmail.value = '';
+                setTimeout(() => {
+                    newsletterFeedback.textContent = '';
+                }, 3000);
+            });
+
+            newsletterEmail.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') newsletterBtn.click();
+            });
+
+            // ==========================================================
+            // BOTÕES "Get Started" — comportamento
+            // ==========================================================
+            document.querySelectorAll('.partner-overlay .btn-primary').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    alert('🚀 Welcome! This is a simulated onboarding flow.');
+                });
+            });
+
+            // ==========================================================
+            // NAVEGAÇÃO PRINCIPAL — ativo
+            // ==========================================================
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
                 });
             });
 
