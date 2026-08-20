@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,7 +83,52 @@
         }
 
         /* ==============================================================
-           LOADING RÁPIDO — APENAS ANIMAÇÃO DE ENTRADA
+           SELETOR DE IDIOMA — MINIMALISTA
+           ============================================================== */
+        .language-selector {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 99998;
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(6px);
+            padding: 4px 8px;
+            border-radius: 30px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 11px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .language-selector:hover {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+        .language-selector button {
+            background: none;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            color: #888;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .language-selector button:hover {
+            color: #333;
+            background: rgba(0, 0, 0, 0.04);
+        }
+        .language-selector button.active {
+            color: var(--primary-orange);
+            background: rgba(255, 152, 0, 0.12);
+        }
+
+        /* ==============================================================
+           LOADING RÁPIDO
            ============================================================== */
 
         #order-entry-screen {
@@ -221,7 +266,6 @@
             transform: scale(1.02);
         }
 
-        /* ─── NAVEGAÇÃO DESKTOP ─── */
         .navbar {
             width: min(100% - 40px, 1200px);
             min-height: 70px;
@@ -296,7 +340,6 @@
             white-space: nowrap;
         }
 
-        /* ─── NAVEGAÇÃO MOBILE (BOTTOM) ─── */
         .bottom-nav {
             display: none;
             position: fixed;
@@ -921,7 +964,7 @@
         }
 
         /* ==========================================================
-           CARRINHO LATERAL (DRAWER)
+           CARRINHO LATERAL
            ========================================================== */
         .cart-drawer {
             position: fixed;
@@ -1141,10 +1184,19 @@
             .stat-item h2 { font-size: 26px; }
             .stat-item p { font-size: 12px; }
             .section-header { flex-direction: column; align-items: flex-start; }
+            .language-selector {
+                top: 8px;
+                left: 8px;
+                padding: 3px 6px;
+                font-size: 10px;
+            }
+            .language-selector button {
+                padding: 3px 8px;
+                font-size: 10px;
+            }
         }
 
         @media (max-width: 768px) {
-            /* Esconde navbar desktop e mostra bottom nav */
             .navbar { display: none; }
             .bottom-nav { display: flex; }
             body { padding-bottom: 75px; }
@@ -1225,6 +1277,17 @@
             .bottom-bar { flex-direction: column; align-items: center; text-align: center; }
             .bottom-bar-links { justify-content: center; }
             .cart-drawer { width: 100%; max-width: 100%; right: -100%; }
+            .language-selector {
+                top: 6px;
+                left: 6px;
+                padding: 3px 5px;
+                font-size: 9px;
+                border-radius: 20px;
+            }
+            .language-selector button {
+                padding: 2px 6px;
+                font-size: 9px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1398,13 +1461,34 @@
             .bottom-bar-links a { font-size: 9px; }
             h2 { font-size: 18px !important; }
             .container h2 { font-size: 18px !important; }
+            .language-selector {
+                top: 4px;
+                left: 4px;
+                padding: 2px 4px;
+                font-size: 8px;
+                border-radius: 16px;
+                gap: 2px;
+            }
+            .language-selector button {
+                padding: 2px 5px;
+                font-size: 8px;
+            }
         }
     </style>
 </head>
 <body>
 
     <!-- ==============================================================
-    LOADING RÁPIDO — APENAS ANIMAÇÃO DE ENTRADA
+    SELETOR DE IDIOMA — MINIMALISTA
+    ============================================================== -->
+    <div class="language-selector" id="languageSelector">
+        <button class="active" data-lang="pt">PT</button>
+        <button data-lang="es">ES</button>
+        <button data-lang="en">EN</button>
+    </div>
+
+    <!-- ==============================================================
+    LOADING RÁPIDO
     ============================================================== -->
     <div id="order-entry-screen">
         <div id="order-entry-logo">Order<span>.uk</span></div>
@@ -1421,22 +1505,22 @@
     ============================================================== -->
     <div class="cart-drawer" id="cartDrawer">
         <div class="cart-header">
-            <h3><i class="fas fa-shopping-bag" style="color: var(--primary-orange);"></i> Your Order</h3>
+            <h3><i class="fas fa-shopping-bag" style="color: var(--primary-orange);"></i> <span data-i18n="cart_title">Your Order</span></h3>
             <button class="cart-close" id="cartClose"><i class="fas fa-times"></i></button>
         </div>
         <div class="cart-items" id="cartItems">
             <div class="cart-empty">
                 <i class="fas fa-shopping-cart"></i>
-                Your cart is empty
-                <p style="font-size: 14px; margin-top: 8px;">Add items from our deals!</p>
+                <span data-i18n="cart_empty">Your cart is empty</span>
+                <p style="font-size: 14px; margin-top: 8px;" data-i18n="cart_empty_hint">Add items from our deals!</p>
             </div>
         </div>
         <div class="cart-footer">
             <div class="cart-subtotal">
-                <span>Subtotal</span>
+                <span data-i18n="cart_subtotal">Subtotal</span>
                 <span id="cartTotal">£0.00</span>
             </div>
-            <button class="cart-checkout-btn" id="checkoutBtn">Continue to checkout</button>
+            <button class="cart-checkout-btn" id="checkoutBtn" data-i18n="cart_checkout">Continue to checkout</button>
         </div>
     </div>
 
@@ -1446,10 +1530,10 @@
 
     <div class="header-wrapper">
         <div class="top-bar">
-            <span><i class="fas fa-gift"></i> Get 5% OFF your first order. Promo: ORDER25</span>
-            <span><i class="fas fa-map-marker-alt"></i> Regent Street, W1B, London</span>
+            <span><i class="fas fa-gift"></i> <span data-i18n="topbar_promo">Get 5% OFF your first order. Promo: ORDER25</span></span>
+            <span><i class="fas fa-map-marker-alt"></i> <span data-i18n="topbar_location">Regent Street, W1B, London</span></span>
             <div class="cart-info" id="cartToggle">
-                <span><i class="fas fa-shopping-bag"></i> <span id="cartCount">0</span> items</span>
+                <span><i class="fas fa-shopping-bag"></i> <span id="cartCount">0</span> <span data-i18n="cart_items_label">items</span></span>
                 <span>GBP <span id="cartMiniTotal">0.00</span></span>
                 <span><i class="fas fa-user-circle"></i></span>
             </div>
@@ -1459,33 +1543,33 @@
         <nav class="container navbar">
             <div class="logo">Order<span>.uk</span></div>
             <ul class="nav-links">
-                <li><a href="#" class="active">Home</a></li>
-                <li><a href="#">Menu</a></li>
-                <li><a href="#">Lojas</a></li>
-                <li><a href="#">Conta</a></li>
+                <li><a href="#" class="active" data-i18n="nav_home">Home</a></li>
+                <li><a href="#" data-i18n="nav_menu">Menu</a></li>
+                <li><a href="#" data-i18n="nav_stores">Lojas</a></li>
+                <li><a href="#" data-i18n="nav_account">Conta</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="btn-dark"><i class="fas fa-user"></i> Login/Signup</button>
+                <button class="btn-dark"><i class="fas fa-user"></i> <span data-i18n="nav_login">Login/Signup</span></button>
             </div>
         </nav>
     </div>
 
     <!-- NAVEGAÇÃO MOBILE (BOTTOM) -->
     <nav class="bottom-nav">
-        <a href="#" class="active"><i class="fas fa-home"></i><span>Home</span></a>
-        <a href="#"><i class="fas fa-utensils"></i><span>Menu</span></a>
-        <a href="#"><i class="fas fa-store"></i><span>Lojas</span></a>
-        <a href="#"><i class="fas fa-user"></i><span>Conta</span></a>
+        <a href="#" class="active"><i class="fas fa-home"></i><span data-i18n="nav_home">Home</span></a>
+        <a href="#"><i class="fas fa-utensils"></i><span data-i18n="nav_menu">Menu</span></a>
+        <a href="#"><i class="fas fa-store"></i><span data-i18n="nav_stores">Lojas</span></a>
+        <a href="#"><i class="fas fa-user"></i><span data-i18n="nav_account">Conta</span></a>
     </nav>
 
     <section class="container hero">
         <div class="hero-text">
-            <p>Order Restaurant food, takeaway and groceries.</p>
-            <h1>Feast Your Senses,<br><span>Fast and Fresh</span></h1>
-            <p style="font-size: 14px; color: #aaa;">Enter postcode to see what we deliver</p>
+            <p data-i18n="hero_subtitle">Order Restaurant food, takeaway and groceries.</p>
+            <h1><span data-i18n="hero_title_line1">Feast Your Senses,</span><br><span data-i18n="hero_title_line2">Fast and Fresh</span></h1>
+            <p style="font-size: 14px; color: #aaa;" data-i18n="hero_search_label">Enter postcode to see what we deliver</p>
             <div class="search-box">
                 <input type="text" id="postcodeInput" placeholder="e.g. EC4R 3TE">
-                <button class="btn-primary" id="searchBtn">Search</button>
+                <button class="btn-primary" id="searchBtn" data-i18n="hero_search_btn">Search</button>
             </div>
             <div class="search-result-feedback" id="searchFeedback"></div>
         </div>
@@ -1493,29 +1577,29 @@
             <img class="hero-shadow" src="./assets/img2.png" alt="" aria-hidden="true">
             <img class="hero-woman" src="./assets/img1.png" alt="Woman holding pizza">
             <div class="floating-card fc-1">
-                <strong>Orders</strong>
-                <small>We've received your order!</small>
+                <strong data-i18n="fc_orders">Orders</strong>
+                <small data-i18n="fc_received">We've received your order!</small>
             </div>
             <div class="floating-card fc-2">
-                <strong>Orders</strong>
-                <small>Order Accepted <i class="fas fa-check-circle"></i></small>
+                <strong data-i18n="fc_orders">Orders</strong>
+                <small data-i18n="fc_accepted">Order Accepted <i class="fas fa-check-circle"></i></small>
             </div>
             <div class="floating-card fc-3">
-                <strong>Orders</strong>
-                <small>Out for delivery <i class="fas fa-motorcycle"></i></small>
+                <strong data-i18n="fc_orders">Orders</strong>
+                <small data-i18n="fc_delivery">Out for delivery <i class="fas fa-motorcycle"></i></small>
             </div>
         </div>
     </section>
 
     <div class="container">
         <div class="section-header">
-            <h2>Up to -40% <i class="fas fa-bolt"></i> Order.uk exclusive deals</h2>
+            <h2><span data-i18n="deals_title">Up to -40%</span> <i class="fas fa-bolt"></i> <span data-i18n="deals_subtitle">Order.uk exclusive deals</span></h2>
             <div class="filters" id="filterContainer">
-                <span data-filter="all" class="active">All</span>
-                <span data-filter="vegan">Vegan</span>
-                <span data-filter="sushi">Sushi</span>
-                <span data-filter="pizza">Pizza & Fast food</span>
-                <span data-filter="others">Others</span>
+                <span data-filter="all" class="active" data-i18n="filter_all">All</span>
+                <span data-filter="vegan" data-i18n="filter_vegan">Vegan</span>
+                <span data-filter="sushi" data-i18n="filter_sushi">Sushi</span>
+                <span data-filter="pizza" data-i18n="filter_pizza">Pizza & Fast food</span>
+                <span data-filter="others" data-i18n="filter_others">Others</span>
             </div>
         </div>
         <div class="deals-grid" id="dealsGrid">
@@ -1523,60 +1607,60 @@
                 <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=80" alt="Burger" loading="lazy">
                 <div class="deal-badge">-40%</div>
                 <div class="deal-info">
-                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <p style="font-size: 12px; opacity: 0.8;" data-i18n="deal_restaurant">Restaurant</p>
                     <h3>Chef Burgers London</h3>
                     <p style="font-size: 13px; font-weight: 600;">£12.90</p>
-                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;" data-i18n="deal_add_cart">Add to Cart</button>
                 </div>
             </div>
             <div class="deal-card" data-category="pizza" data-name="Grand Ai Cafe London" data-price="14.50">
                 <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=500&q=80" alt="Pasta" loading="lazy">
                 <div class="deal-badge">-20%</div>
                 <div class="deal-info">
-                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <p style="font-size: 12px; opacity: 0.8;" data-i18n="deal_restaurant">Restaurant</p>
                     <h3>Grand Ai Cafe London</h3>
                     <p style="font-size: 13px; font-weight: 600;">£14.50</p>
-                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;" data-i18n="deal_add_cart">Add to Cart</button>
                 </div>
             </div>
             <div class="deal-card" data-category="vegan" data-name="Butterbrot Cafe London" data-price="9.90">
                 <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&q=80" alt="Salad" loading="lazy">
                 <div class="deal-badge">-35%</div>
                 <div class="deal-info">
-                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <p style="font-size: 12px; opacity: 0.8;" data-i18n="deal_restaurant">Restaurant</p>
                     <h3>Butterbrot Cafe London</h3>
                     <p style="font-size: 13px; font-weight: 600;">£9.90</p>
-                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;" data-i18n="deal_add_cart">Add to Cart</button>
                 </div>
             </div>
             <div class="deal-card" data-category="sushi" data-name="Sushi House" data-price="18.20">
                 <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500&q=80" alt="Sushi" loading="lazy">
                 <div class="deal-badge">-15%</div>
                 <div class="deal-info">
-                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <p style="font-size: 12px; opacity: 0.8;" data-i18n="deal_restaurant">Restaurant</p>
                     <h3>Sushi House</h3>
                     <p style="font-size: 13px; font-weight: 600;">£18.20</p>
-                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;" data-i18n="deal_add_cart">Add to Cart</button>
                 </div>
             </div>
             <div class="deal-card" data-category="others" data-name="Taco Bell" data-price="11.30">
                 <img src="https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=500&q=80" alt="Tacos" loading="lazy">
                 <div class="deal-badge">-25%</div>
                 <div class="deal-info">
-                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <p style="font-size: 12px; opacity: 0.8;" data-i18n="deal_restaurant">Restaurant</p>
                     <h3>Taco Bell</h3>
                     <p style="font-size: 13px; font-weight: 600;">£11.30</p>
-                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;" data-i18n="deal_add_cart">Add to Cart</button>
                 </div>
             </div>
             <div class="deal-card" data-category="vegan" data-name="Green Kitchen" data-price="13.70">
                 <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80" alt="Vegan Bowl" loading="lazy">
                 <div class="deal-badge">-30%</div>
                 <div class="deal-info">
-                    <p style="font-size: 12px; opacity: 0.8;">Restaurant</p>
+                    <p style="font-size: 12px; opacity: 0.8;" data-i18n="deal_restaurant">Restaurant</p>
                     <h3>Green Kitchen</h3>
                     <p style="font-size: 13px; font-weight: 600;">£13.70</p>
-                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;">Add to Cart</button>
+                    <button class="btn-primary add-to-cart" style="padding: 4px 16px; font-size: 11px; margin-top: 6px;" data-i18n="deal_add_cart">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -1584,44 +1668,44 @@
 
     <div class="container">
         <div class="section-header">
-            <h2>Order.uk Popular Categories <i class="far fa-smile-wink"></i></h2>
+            <h2><span data-i18n="categories_title">Order.uk Popular Categories</span> <i class="far fa-smile-wink"></i></h2>
         </div>
         <div class="categories-grid">
             <div class="category-card">
                 <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=150&q=80" alt="Burger" loading="lazy">
-                <h4>Burger & Fast food</h4>
-                <p>6 Restaurants</p>
+                <h4 data-i18n="cat_burger">Burger & Fast food</h4>
+                <p data-i18n="cat_restaurants">6 Restaurants</p>
             </div>
             <div class="category-card">
                 <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=150&q=80" alt="Salad" loading="lazy">
-                <h4>Salads</h4>
-                <p>10 Restaurants</p>
+                <h4 data-i18n="cat_salads">Salads</h4>
+                <p data-i18n="cat_restaurants_2">10 Restaurants</p>
             </div>
             <div class="category-card">
                 <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=150&q=80" alt="Pasta" loading="lazy">
-                <h4>Pasta & Canals</h4>
-                <p>12 Restaurants</p>
+                <h4 data-i18n="cat_pasta">Pasta & Canals</h4>
+                <p data-i18n="cat_restaurants_3">12 Restaurants</p>
             </div>
             <div class="category-card">
                 <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=150&q=80" alt="Pizza" loading="lazy">
-                <h4>Pizza</h4>
-                <p>8 Restaurants</p>
+                <h4 data-i18n="cat_pizza">Pizza</h4>
+                <p data-i18n="cat_restaurants_4">8 Restaurants</p>
             </div>
             <div class="category-card">
                 <img src="https://images.unsplash.com/photo-1513442542250-854d436a73f2?w=150&q=80" alt="Breakfast" loading="lazy">
-                <h4>Breakfast</h4>
-                <p>15 Restaurants</p>
+                <h4 data-i18n="cat_breakfast">Breakfast</h4>
+                <p data-i18n="cat_restaurants_5">15 Restaurants</p>
             </div>
             <div class="category-card">
                 <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=150&q=80" alt="Soup" loading="lazy">
-                <h4>Soup</h4>
-                <p>5 Restaurants</p>
+                <h4 data-i18n="cat_soup">Soup</h4>
+                <p data-i18n="cat_restaurants_6">5 Restaurants</p>
             </div>
         </div>
     </div>
 
     <div class="container">
-        <h2 style="margin-top: 40px; font-size: 24px;">Popular Restaurants</h2>
+        <h2 style="margin-top: 40px; font-size: 24px;" data-i18n="popular_restaurants">Popular Restaurants</h2>
         <div class="restaurants-grid">
             <div class="restaurant-logo" style="background: #da291c; color: white;">
                 <i class="fas fa-hamburger" style="font-size: 40px;"></i>
@@ -1652,8 +1736,8 @@
 
     <div class="container app-banner">
         <div class="app-banner-content">
-            <h2>Ordering is more<br><span>Personalised & Instant</span></h2>
-            <div class="badge-dark">Download the Order.uk app for faster ordering</div>
+            <h2><span data-i18n="app_title_line1">Ordering is more</span><br><span data-i18n="app_title_line2">Personalised & Instant</span></h2>
+            <div class="badge-dark" data-i18n="app_badge">Download the Order.uk app for faster ordering</div>
         </div>
         <div class="app-banner-img">
             <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" loading="lazy">
@@ -1665,17 +1749,17 @@
         <div class="partner-card">
             <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80" alt="Partner" loading="lazy">
             <div class="partner-overlay">
-                <div class="badge-white">Earn more with lower fees</div>
-                <h3>Partner with us</h3>
-                <button class="btn-primary">Get Started</button>
+                <div class="badge-white" data-i18n="partner_badge1">Earn more with lower fees</div>
+                <h3 data-i18n="partner_title1">Partner with us</h3>
+                <button class="btn-primary" data-i18n="partner_btn">Get Started</button>
             </div>
         </div>
         <div class="partner-card">
             <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=80" alt="Rider" loading="lazy">
             <div class="partner-overlay">
-                <div class="badge-white">Avail exclusive perks</div>
-                <h3>Ride with us</h3>
-                <button class="btn-primary">Get Started</button>
+                <div class="badge-white" data-i18n="partner_badge2">Avail exclusive perks</div>
+                <h3 data-i18n="partner_title2">Ride with us</h3>
+                <button class="btn-primary" data-i18n="partner_btn">Get Started</button>
             </div>
         </div>
     </div>
@@ -1683,71 +1767,71 @@
     <div class="container stats-bar">
         <div class="stat-item">
             <h2>546+</h2>
-            <p>Registered Riders</p>
+            <p data-i18n="stat_riders">Registered Riders</p>
         </div>
         <div class="stat-item">
             <h2>789,900+</h2>
-            <p>Orders Delivered</p>
+            <p data-i18n="stat_orders">Orders Delivered</p>
         </div>
         <div class="stat-item">
             <h2>690+</h2>
-            <p>Restaurants Partnered</p>
+            <p data-i18n="stat_partners">Restaurants Partnered</p>
         </div>
         <div class="stat-item">
             <h2>17,457+</h2>
-            <p>Food Items</p>
+            <p data-i18n="stat_items">Food Items</p>
         </div>
     </div>
 
     <div class="container faq-section">
         <div class="faq-list">
-            <h2 style="margin-bottom: 20px;">Know more about us!</h2>
+            <h2 style="margin-bottom: 20px;" data-i18n="faq_title">Know more about us!</h2>
             <div class="faq-item active" data-target="faq1">
-                How does Order.uk work? <i class="fas fa-minus"></i>
+                <span data-i18n="faq_q1">How does Order.uk work?</span> <i class="fas fa-minus"></i>
             </div>
             <div class="faq-answer open" id="faq1">
-                <p>Choose a restaurant, add your favorite items to the cart and complete your order. You can then follow the delivery status in real time.</p>
+                <p data-i18n="faq_a1">Choose a restaurant, add your favorite items to the cart and complete your order. You can then follow the delivery status in real time.</p>
             </div>
             <div class="faq-item" data-target="faq2">
-                What payment methods are accepted? <i class="fas fa-plus"></i>
+                <span data-i18n="faq_q2">What payment methods are accepted?</span> <i class="fas fa-plus"></i>
             </div>
             <div class="faq-answer" id="faq2">
-                <p>We accept all major credit and debit cards, PayPal, Apple Pay, and Google Pay. Cash payment is also available in selected areas.</p>
+                <p data-i18n="faq_a2">We accept all major credit and debit cards, PayPal, Apple Pay, and Google Pay. Cash payment is also available in selected areas.</p>
             </div>
             <div class="faq-item" data-target="faq3">
-                Can I track my order in real-time? <i class="fas fa-plus"></i>
+                <span data-i18n="faq_q3">Can I track my order in real-time?</span> <i class="fas fa-plus"></i>
             </div>
             <div class="faq-answer" id="faq3">
-                <p>Yes! Once your order is confirmed, you can track the delivery status live on our website or mobile app, from preparation to your doorstep.</p>
+                <p data-i18n="faq_a3">Yes! Once your order is confirmed, you can track the delivery status live on our website or mobile app, from preparation to your doorstep.</p>
             </div>
             <div class="faq-item" data-target="faq4">
-                Are there any special discounts or promotions available? <i class="fas fa-plus"></i>
+                <span data-i18n="faq_q4">Are there any special discounts or promotions available?</span> <i class="fas fa-plus"></i>
             </div>
             <div class="faq-answer" id="faq4">
-                <p>We regularly offer exclusive deals and discounts. Check our "Special Offers" section and subscribe to our newsletter to stay updated.</p>
+                <p data-i18n="faq_a4">We regularly offer exclusive deals and discounts. Check our "Special Offers" section and subscribe to our newsletter to stay updated.</p>
             </div>
             <div class="faq-item" data-target="faq5">
-                Is Order.uk available in my area? <i class="fas fa-plus"></i>
+                <span data-i18n="faq_q5">Is Order.uk available in my area?</span> <i class="fas fa-plus"></i>
             </div>
             <div class="faq-answer" id="faq5">
-                <p>We are expanding rapidly! Enter your postcode in the search box on the homepage to see if we deliver to your area.</p>
+                <p data-i18n="faq_a5">We are expanding rapidly! Enter your postcode in the search box on the homepage to see if we deliver to your area.</p>
             </div>
         </div>
         <div class="faq-visual">
             <div class="visual-step">
                 <div class="icon-box"><i class="fas fa-cart-plus" style="color: #FF9800;"></i></div>
-                <h4>Place an Order</h4>
-                <p>Place order through our website or mobile app</p>
+                <h4 data-i18n="step1_title">Place an Order</h4>
+                <p data-i18n="step1_desc">Place order through our website or mobile app</p>
             </div>
             <div class="visual-step">
                 <div class="icon-box"><i class="fas fa-truck" style="color: #FF9800;"></i></div>
-                <h4>Track Progress</h4>
-                <p>You can track your order status with delivery time</p>
+                <h4 data-i18n="step2_title">Track Progress</h4>
+                <p data-i18n="step2_desc">You can track your order status with delivery time</p>
             </div>
             <div class="visual-step" style="grid-column: span 2; text-align: left; margin-top: 10px; border-top: 1px solid #333; padding-top: 20px;">
                 <div class="icon-box" style="display: inline-flex;"><i class="fas fa-check-circle" style="color: #4CAF50;"></i></div>
-                <h4 style="display: inline-block; margin-left: 15px;">Get your Order!</h4>
-                <p style="margin-left: 75px;">Receive your order at a lightning fast speed!</p>
+                <h4 style="display: inline-block; margin-left: 15px;" data-i18n="step3_title">Get your Order!</h4>
+                <p style="margin-left: 75px;" data-i18n="step3_desc">Receive your order at a lightning fast speed!</p>
             </div>
         </div>
     </div>
@@ -1756,7 +1840,7 @@
         <div class="container footer-grid">
             <div class="footer-logo">
                 <h2>Order<span>.uk</span></h2>
-                <p>Company # 402483-UK, registered in<br>house of companies.</p>
+                <p data-i18n="footer_company">Company # 402483-UK, registered in<br>house of companies.</p>
                 <div class="store-buttons">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" loading="lazy">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" loading="lazy">
@@ -1767,43 +1851,43 @@
             </div>
 
             <div class="newsletter">
-                <h4>Get Exclusive Deals in your inbox</h4>
+                <h4 data-i18n="newsletter_title">Get Exclusive Deals in your inbox</h4>
                 <div class="newsletter-form">
                     <input type="email" id="newsletterEmail" placeholder="your.email@example.com">
-                    <button class="btn-primary" id="newsletterBtn">Subscribe</button>
+                    <button class="btn-primary" id="newsletterBtn" data-i18n="newsletter_btn">Subscribe</button>
                 </div>
                 <div class="newsletter-feedback" id="newsletterFeedback"></div>
-                <p style="font-size: 12px; margin-top: 6px; color: #777;">We won't spam, read our Privacy Policy</p>
+                <p style="font-size: 12px; margin-top: 6px; color: #777;" data-i18n="newsletter_privacy">We won't spam, read our Privacy Policy</p>
             </div>
 
             <div class="footer-links">
-                <h4>Legal Pages</h4>
+                <h4 data-i18n="footer_legal">Legal Pages</h4>
                 <ul>
-                    <li><a href="#">Terms and conditions</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Cookies</a></li>
-                    <li><a href="#">Modern Slavery Statement</a></li>
+                    <li><a href="#" data-i18n="footer_terms">Terms and conditions</a></li>
+                    <li><a href="#" data-i18n="footer_privacy">Privacy</a></li>
+                    <li><a href="#" data-i18n="footer_cookies">Cookies</a></li>
+                    <li><a href="#" data-i18n="footer_slavery">Modern Slavery Statement</a></li>
                 </ul>
             </div>
 
             <div class="footer-links">
-                <h4>Important links</h4>
+                <h4 data-i18n="footer_important">Important links</h4>
                 <ul>
-                    <li><a href="#">Get help</a></li>
-                    <li><a href="#">Add your restaurant</a></li>
-                    <li><a href="#">Sign up to deliver</a></li>
-                    <li><a href="#">Create a business account</a></li>
+                    <li><a href="#" data-i18n="footer_help">Get help</a></li>
+                    <li><a href="#" data-i18n="footer_add_restaurant">Add your restaurant</a></li>
+                    <li><a href="#" data-i18n="footer_deliver">Sign up to deliver</a></li>
+                    <li><a href="#" data-i18n="footer_business">Create a business account</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="container bottom-bar">
-            <span>Order.uk Copyright 2026. All rights Reserved.</span>
+            <span data-i18n="footer_copyright">Order.uk Copyright 2026. All rights Reserved.</span>
             <div class="bottom-bar-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms</a>
-                <a href="#">Pricing</a>
-                <a href="#">Do not sell or share my personal information</a>
+                <a href="#" data-i18n="footer_privacy_policy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms_short">Terms</a>
+                <a href="#" data-i18n="footer_pricing">Pricing</a>
+                <a href="#" data-i18n="footer_share">Do not sell or share my personal information</a>
             </div>
         </div>
     </footer>
@@ -1812,7 +1896,374 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             // ==========================================================
-            // LOADING RÁPIDO — SAI EM 1.4s
+            // TRADUÇÕES
+            // ==========================================================
+            const translations = {
+                pt: {
+                    // Navegação
+                    nav_home: 'Início',
+                    nav_menu: 'Cardápio',
+                    nav_stores: 'Lojas',
+                    nav_account: 'Conta',
+                    nav_login: 'Entrar/Cadastrar',
+                    // Topbar
+                    topbar_promo: 'Ganhe 5% OFF na sua primeira compra. Promo: ORDER25',
+                    topbar_location: 'Regent Street, W1B, Londres',
+                    cart_items_label: 'itens',
+                    // Hero
+                    hero_subtitle: 'Peça comida, delivery e mantimentos.',
+                    hero_title_line1: 'Delicie seus Sentidos,',
+                    hero_title_line2: 'Rápido e Fresco',
+                    hero_search_label: 'Digite o código postal para ver o que entregamos',
+                    hero_search_btn: 'Buscar',
+                    // Floating cards
+                    fc_orders: 'Pedidos',
+                    fc_received: 'Recebemos seu pedido!',
+                    fc_accepted: 'Pedido Aceito',
+                    fc_delivery: 'Saiu para entrega',
+                    // Deals
+                    deals_title: 'Até -40%',
+                    deals_subtitle: 'Ofertas exclusivas Order.uk',
+                    filter_all: 'Todos',
+                    filter_vegan: 'Vegano',
+                    filter_sushi: 'Sushi',
+                    filter_pizza: 'Pizza & Fast food',
+                    filter_others: 'Outros',
+                    deal_restaurant: 'Restaurante',
+                    deal_add_cart: 'Adicionar',
+                    // Categories
+                    categories_title: 'Categorias Populares',
+                    cat_burger: 'Burger & Fast food',
+                    cat_restaurants: '6 Restaurantes',
+                    cat_salads: 'Saladas',
+                    cat_restaurants_2: '10 Restaurantes',
+                    cat_pasta: 'Massas & Canais',
+                    cat_restaurants_3: '12 Restaurantes',
+                    cat_pizza: 'Pizza',
+                    cat_restaurants_4: '8 Restaurantes',
+                    cat_breakfast: 'Café da manhã',
+                    cat_restaurants_5: '15 Restaurantes',
+                    cat_soup: 'Sopas',
+                    cat_restaurants_6: '5 Restaurantes',
+                    // Popular restaurants
+                    popular_restaurants: 'Restaurantes Populares',
+                    // App banner
+                    app_title_line1: 'Pedir é mais',
+                    app_title_line2: 'Personalizado & Instantâneo',
+                    app_badge: 'Baixe o app Order.uk para pedir mais rápido',
+                    // Partner
+                    partner_badge1: 'Ganhe mais com taxas menores',
+                    partner_title1: 'Seja parceiro',
+                    partner_badge2: 'Aproveite benefícios exclusivos',
+                    partner_title2: 'Entregue conosco',
+                    partner_btn: 'Começar',
+                    // Stats
+                    stat_riders: 'Entregadores Registrados',
+                    stat_orders: 'Pedidos Entregues',
+                    stat_partners: 'Restaurantes Parceiros',
+                    stat_items: 'Itens no Cardápio',
+                    // FAQ
+                    faq_title: 'Saiba mais sobre nós!',
+                    faq_q1: 'Como funciona o Order.uk?',
+                    faq_a1: 'Escolha um restaurante, adicione seus itens favoritos ao carrinho e finalize o pedido. Você pode acompanhar o status da entrega em tempo real.',
+                    faq_q2: 'Quais formas de pagamento são aceitas?',
+                    faq_a2: 'Aceitamos todos os principais cartões de crédito e débito, PayPal, Apple Pay e Google Pay. Pagamento em dinheiro também está disponível em áreas selecionadas.',
+                    faq_q3: 'Posso rastrear meu pedido em tempo real?',
+                    faq_a3: 'Sim! Assim que seu pedido for confirmado, você pode acompanhar o status da entrega ao vivo em nosso site ou aplicativo, desde o preparo até a sua porta.',
+                    faq_q4: 'Há descontos ou promoções especiais disponíveis?',
+                    faq_a4: 'Oferecemos regularmente ofertas e descontos exclusivos. Confira nossa seção "Ofertas Especiais" e assine nossa newsletter para ficar atualizado.',
+                    faq_q5: 'O Order.uk está disponível na minha região?',
+                    faq_a5: 'Estamos expandindo rapidamente! Digite seu código postal na caixa de busca na página inicial para ver se entregamos na sua área.',
+                    // FAQ Steps
+                    step1_title: 'Faça um Pedido',
+                    step1_desc: 'Faça o pedido pelo nosso site ou aplicativo',
+                    step2_title: 'Acompanhe o Progresso',
+                    step2_desc: 'Você pode acompanhar o status do pedido com o tempo de entrega',
+                    step3_title: 'Receba seu Pedido!',
+                    step3_desc: 'Receba seu pedido em alta velocidade!',
+                    // Footer
+                    footer_company: 'Empresa # 402483-UK, registrada na<br>casa das empresas.',
+                    newsletter_title: 'Receba ofertas exclusivas no seu email',
+                    newsletter_btn: 'Assinar',
+                    newsletter_privacy: 'Não enviaremos spam, leia nossa Política de Privacidade',
+                    footer_legal: 'Páginas Legais',
+                    footer_terms: 'Termos e condições',
+                    footer_privacy: 'Privacidade',
+                    footer_cookies: 'Cookies',
+                    footer_slavery: 'Declaração sobre Escravidão Moderna',
+                    footer_important: 'Links Importantes',
+                    footer_help: 'Ajuda',
+                    footer_add_restaurant: 'Adicione seu restaurante',
+                    footer_deliver: 'Cadastre-se para entregar',
+                    footer_business: 'Crie uma conta empresarial',
+                    footer_copyright: 'Order.uk Copyright 2026. Todos os direitos reservados.',
+                    footer_privacy_policy: 'Política de Privacidade',
+                    footer_terms_short: 'Termos',
+                    footer_pricing: 'Preços',
+                    footer_share: 'Não venda ou compartilhe minhas informações pessoais',
+                    // Cart
+                    cart_title: 'Seu Pedido',
+                    cart_empty: 'Seu carrinho está vazio',
+                    cart_empty_hint: 'Adicione itens das nossas ofertas!',
+                    cart_subtotal: 'Subtotal',
+                    cart_checkout: 'Ir para o pagamento',
+                },
+                es: {
+                    nav_home: 'Inicio',
+                    nav_menu: 'Menú',
+                    nav_stores: 'Tiendas',
+                    nav_account: 'Cuenta',
+                    nav_login: 'Iniciar Sesión/Registrarse',
+                    topbar_promo: 'Obtén 5% de descuento en tu primer pedido. Promo: ORDER25',
+                    topbar_location: 'Regent Street, W1B, Londres',
+                    cart_items_label: 'artículos',
+                    hero_subtitle: 'Pide comida, para llevar y comestibles.',
+                    hero_title_line1: 'Deleita tus Sentidos,',
+                    hero_title_line2: 'Rápido y Fresco',
+                    hero_search_label: 'Ingresa el código postal para ver lo que entregamos',
+                    hero_search_btn: 'Buscar',
+                    fc_orders: 'Pedidos',
+                    fc_received: '¡Recibimos tu pedido!',
+                    fc_accepted: 'Pedido Aceptado',
+                    fc_delivery: 'En camino',
+                    deals_title: 'Hasta -40%',
+                    deals_subtitle: 'Ofertas exclusivas de Order.uk',
+                    filter_all: 'Todos',
+                    filter_vegan: 'Vegano',
+                    filter_sushi: 'Sushi',
+                    filter_pizza: 'Pizza & Fast food',
+                    filter_others: 'Otros',
+                    deal_restaurant: 'Restaurante',
+                    deal_add_cart: 'Agregar',
+                    categories_title: 'Categorías Populares',
+                    cat_burger: 'Burger & Fast food',
+                    cat_restaurants: '6 Restaurantes',
+                    cat_salads: 'Ensaladas',
+                    cat_restaurants_2: '10 Restaurantes',
+                    cat_pasta: 'Pastas & Canales',
+                    cat_restaurants_3: '12 Restaurantes',
+                    cat_pizza: 'Pizza',
+                    cat_restaurants_4: '8 Restaurantes',
+                    cat_breakfast: 'Desayuno',
+                    cat_restaurants_5: '15 Restaurantes',
+                    cat_soup: 'Sopas',
+                    cat_restaurants_6: '5 Restaurantes',
+                    popular_restaurants: 'Restaurantes Populares',
+                    app_title_line1: 'Pedir es más',
+                    app_title_line2: 'Personalizado & Instantáneo',
+                    app_badge: 'Descarga la app Order.uk para pedir más rápido',
+                    partner_badge1: 'Gana más con comisiones más bajas',
+                    partner_title1: 'Sé socio',
+                    partner_badge2: 'Aprovecha beneficios exclusivos',
+                    partner_title2: 'Reparte con nosotros',
+                    partner_btn: 'Comenzar',
+                    stat_riders: 'Repartidores Registrados',
+                    stat_orders: 'Pedidos Entregados',
+                    stat_partners: 'Restaurantes Asociados',
+                    stat_items: 'Artículos en el Menú',
+                    faq_title: '¡Conócenos mejor!',
+                    faq_q1: '¿Cómo funciona Order.uk?',
+                    faq_a1: 'Elige un restaurante, agrega tus artículos favoritos al carrito y completa tu pedido. Luego puedes seguir el estado de la entrega en tiempo real.',
+                    faq_q2: '¿Qué métodos de pago se aceptan?',
+                    faq_a2: 'Aceptamos todas las principales tarjetas de crédito y débito, PayPal, Apple Pay y Google Pay. El pago en efectivo también está disponible en áreas seleccionadas.',
+                    faq_q3: '¿Puedo rastrear mi pedido en tiempo real?',
+                    faq_a3: '¡Sí! Una vez que tu pedido sea confirmado, puedes seguir el estado de la entrega en vivo en nuestro sitio web o aplicación móvil, desde la preparación hasta tu puerta.',
+                    faq_q4: '¿Hay descuentos o promociones especiales disponibles?',
+                    faq_a4: 'Ofrecemos regularmente ofertas y descuentos exclusivos. Consulta nuestra sección "Ofertas Especiales" y suscríbete a nuestro boletín para mantenerte actualizado.',
+                    faq_q5: '¿Order.uk está disponible en mi área?',
+                    faq_a5: '¡Estamos expandiéndonos rápidamente! Ingresa tu código postal en el cuadro de búsqueda en la página de inicio para ver si entregamos en tu área.',
+                    step1_title: 'Haz un Pedido',
+                    step1_desc: 'Haz el pedido a través de nuestro sitio web o aplicación',
+                    step2_title: 'Sigue el Progreso',
+                    step2_desc: 'Puedes seguir el estado de tu pedido con el tiempo de entrega',
+                    step3_title: '¡Recibe tu Pedido!',
+                    step3_desc: '¡Recibe tu pedido a gran velocidad!',
+                    footer_company: 'Empresa # 402483-UK, registrada en<br>la casa de empresas.',
+                    newsletter_title: 'Recibe ofertas exclusivas en tu correo',
+                    newsletter_btn: 'Suscribirse',
+                    newsletter_privacy: 'No enviaremos spam, lea nuestra Política de Privacidad',
+                    footer_legal: 'Páginas Legales',
+                    footer_terms: 'Términos y condiciones',
+                    footer_privacy: 'Privacidad',
+                    footer_cookies: 'Cookies',
+                    footer_slavery: 'Declaración sobre Esclavitud Moderna',
+                    footer_important: 'Enlaces Importantes',
+                    footer_help: 'Ayuda',
+                    footer_add_restaurant: 'Agrega tu restaurante',
+                    footer_deliver: 'Regístrate para repartir',
+                    footer_business: 'Crea una cuenta empresarial',
+                    footer_copyright: 'Order.uk Copyright 2026. Todos los derechos reservados.',
+                    footer_privacy_policy: 'Política de Privacidad',
+                    footer_terms_short: 'Términos',
+                    footer_pricing: 'Precios',
+                    footer_share: 'No vender ni compartir mi información personal',
+                    cart_title: 'Tu Pedido',
+                    cart_empty: 'Tu carrito está vacío',
+                    cart_empty_hint: '¡Agrega artículos de nuestras ofertas!',
+                    cart_subtotal: 'Subtotal',
+                    cart_checkout: 'Ir al pago',
+                },
+                en: {
+                    nav_home: 'Home',
+                    nav_menu: 'Menu',
+                    nav_stores: 'Stores',
+                    nav_account: 'Account',
+                    nav_login: 'Login/Signup',
+                    topbar_promo: 'Get 5% OFF your first order. Promo: ORDER25',
+                    topbar_location: 'Regent Street, W1B, London',
+                    cart_items_label: 'items',
+                    hero_subtitle: 'Order Restaurant food, takeaway and groceries.',
+                    hero_title_line1: 'Feast Your Senses,',
+                    hero_title_line2: 'Fast and Fresh',
+                    hero_search_label: 'Enter postcode to see what we deliver',
+                    hero_search_btn: 'Search',
+                    fc_orders: 'Orders',
+                    fc_received: 'We\'ve received your order!',
+                    fc_accepted: 'Order Accepted',
+                    fc_delivery: 'Out for delivery',
+                    deals_title: 'Up to -40%',
+                    deals_subtitle: 'Order.uk exclusive deals',
+                    filter_all: 'All',
+                    filter_vegan: 'Vegan',
+                    filter_sushi: 'Sushi',
+                    filter_pizza: 'Pizza & Fast food',
+                    filter_others: 'Others',
+                    deal_restaurant: 'Restaurant',
+                    deal_add_cart: 'Add to Cart',
+                    categories_title: 'Popular Categories',
+                    cat_burger: 'Burger & Fast food',
+                    cat_restaurants: '6 Restaurants',
+                    cat_salads: 'Salads',
+                    cat_restaurants_2: '10 Restaurants',
+                    cat_pasta: 'Pasta & Canals',
+                    cat_restaurants_3: '12 Restaurants',
+                    cat_pizza: 'Pizza',
+                    cat_restaurants_4: '8 Restaurants',
+                    cat_breakfast: 'Breakfast',
+                    cat_restaurants_5: '15 Restaurants',
+                    cat_soup: 'Soup',
+                    cat_restaurants_6: '5 Restaurants',
+                    popular_restaurants: 'Popular Restaurants',
+                    app_title_line1: 'Ordering is more',
+                    app_title_line2: 'Personalised & Instant',
+                    app_badge: 'Download the Order.uk app for faster ordering',
+                    partner_badge1: 'Earn more with lower fees',
+                    partner_title1: 'Partner with us',
+                    partner_badge2: 'Avail exclusive perks',
+                    partner_title2: 'Ride with us',
+                    partner_btn: 'Get Started',
+                    stat_riders: 'Registered Riders',
+                    stat_orders: 'Orders Delivered',
+                    stat_partners: 'Restaurants Partnered',
+                    stat_items: 'Food Items',
+                    faq_title: 'Know more about us!',
+                    faq_q1: 'How does Order.uk work?',
+                    faq_a1: 'Choose a restaurant, add your favorite items to the cart and complete your order. You can then follow the delivery status in real time.',
+                    faq_q2: 'What payment methods are accepted?',
+                    faq_a2: 'We accept all major credit and debit cards, PayPal, Apple Pay, and Google Pay. Cash payment is also available in selected areas.',
+                    faq_q3: 'Can I track my order in real-time?',
+                    faq_a3: 'Yes! Once your order is confirmed, you can track the delivery status live on our website or mobile app, from preparation to your doorstep.',
+                    faq_q4: 'Are there any special discounts or promotions available?',
+                    faq_a4: 'We regularly offer exclusive deals and discounts. Check our "Special Offers" section and subscribe to our newsletter to stay updated.',
+                    faq_q5: 'Is Order.uk available in my area?',
+                    faq_a5: 'We are expanding rapidly! Enter your postcode in the search box on the homepage to see if we deliver to your area.',
+                    step1_title: 'Place an Order',
+                    step1_desc: 'Place order through our website or mobile app',
+                    step2_title: 'Track Progress',
+                    step2_desc: 'You can track your order status with delivery time',
+                    step3_title: 'Get your Order!',
+                    step3_desc: 'Receive your order at a lightning fast speed!',
+                    footer_company: 'Company # 402483-UK, registered in<br>house of companies.',
+                    newsletter_title: 'Get Exclusive Deals in your inbox',
+                    newsletter_btn: 'Subscribe',
+                    newsletter_privacy: 'We won\'t spam, read our Privacy Policy',
+                    footer_legal: 'Legal Pages',
+                    footer_terms: 'Terms and conditions',
+                    footer_privacy: 'Privacy',
+                    footer_cookies: 'Cookies',
+                    footer_slavery: 'Modern Slavery Statement',
+                    footer_important: 'Important links',
+                    footer_help: 'Get help',
+                    footer_add_restaurant: 'Add your restaurant',
+                    footer_deliver: 'Sign up to deliver',
+                    footer_business: 'Create a business account',
+                    footer_copyright: 'Order.uk Copyright 2026. All rights Reserved.',
+                    footer_privacy_policy: 'Privacy Policy',
+                    footer_terms_short: 'Terms',
+                    footer_pricing: 'Pricing',
+                    footer_share: 'Do not sell or share my personal information',
+                    cart_title: 'Your Order',
+                    cart_empty: 'Your cart is empty',
+                    cart_empty_hint: 'Add items from our deals!',
+                    cart_subtotal: 'Subtotal',
+                    cart_checkout: 'Continue to checkout',
+                }
+            };
+
+            // ==========================================================
+            // FUNÇÃO DE TRADUÇÃO
+            // ==========================================================
+            let currentLang = 'pt';
+
+            function applyLanguage(lang) {
+                currentLang = lang;
+                const t = translations[lang];
+
+                // Atualiza todos os elementos com data-i18n
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.dataset.i18n;
+                    if (t[key] !== undefined) {
+                        // Mantém HTML interno se houver (para ícones ou tags)
+                        if (el.children.length === 0 || el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+                            el.textContent = t[key];
+                        } else {
+                            // Para elementos com filhos, atualiza apenas texto direto
+                            const childNodes = el.childNodes;
+                            childNodes.forEach(node => {
+                                if (node.nodeType === 3) { // Text node
+                                    node.textContent = t[key];
+                                }
+                            });
+                        }
+                    }
+                });
+
+                // Atualiza placeholders
+                document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                    const key = el.dataset.i18nPlaceholder;
+                    if (t[key] !== undefined) {
+                        el.placeholder = t[key];
+                    }
+                });
+
+                // Atualiza botões do seletor de idioma
+                document.querySelectorAll('.language-selector button').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === lang);
+                });
+
+                // Atualiza o atributo lang do HTML
+                document.documentElement.lang = lang;
+
+                // Reaplica a navegação ativa nos links
+                document.querySelectorAll('.nav-links a, .bottom-nav a').forEach(link => {
+                    if (link.classList.contains('active')) {
+                        const text = link.querySelector('span')?.textContent || link.textContent.trim();
+                    }
+                });
+            }
+
+            // ==========================================================
+            // SELETOR DE IDIOMA
+            // ==========================================================
+            document.querySelectorAll('.language-selector button').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.dataset.lang;
+                    applyLanguage(lang);
+                });
+            });
+
+            // ==========================================================
+            // LOADING RÁPIDO
             // ==========================================================
             const entryScreen = document.getElementById('order-entry-screen');
             setTimeout(() => {
@@ -1823,15 +2274,13 @@
             }, 1400);
 
             // ==========================================================
-            // NAVEGAÇÃO — ativo ao clicar (ambas as versões)
+            // NAVEGAÇÃO — ativo ao clicar
             // ==========================================================
-            // Bottom nav (mobile)
             document.querySelectorAll('.bottom-nav a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     document.querySelectorAll('.bottom-nav a').forEach(l => l.classList.remove('active'));
                     this.classList.add('active');
-                    // Também sincroniza com a nav desktop
                     const text = this.querySelector('span')?.textContent || '';
                     document.querySelectorAll('.nav-links a').forEach(l => {
                         l.classList.toggle('active', l.textContent.trim() === text);
@@ -1839,13 +2288,11 @@
                 });
             });
 
-            // Nav desktop
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
                     this.classList.add('active');
-                    // Sincroniza com a bottom nav
                     const text = this.textContent.trim();
                     document.querySelectorAll('.bottom-nav a').forEach(l => {
                         const span = l.querySelector('span');
@@ -1857,7 +2304,7 @@
             });
 
             // ==========================================================
-            // FAQ — com conteúdo expansível
+            // FAQ
             // ==========================================================
             const faqItems = document.querySelectorAll('.faq-item');
             const faqAnswers = document.querySelectorAll('.faq-answer');
@@ -1887,7 +2334,7 @@
             });
 
             // ==========================================================
-            // FILTROS — funcional
+            // FILTROS
             // ==========================================================
             const filterSpans = document.querySelectorAll('#filterContainer span');
             const dealCards = document.querySelectorAll('.deal-card');
@@ -1909,7 +2356,7 @@
             });
 
             // ==========================================================
-            // BUSCA POR POSTCODE — simulação
+            // BUSCA
             // ==========================================================
             const searchBtn = document.getElementById('searchBtn');
             const postcodeInput = document.getElementById('postcodeInput');
@@ -1931,7 +2378,7 @@
             });
 
             // ==========================================================
-            // CARRINHO — funcional completo
+            // CARRINHO
             // ==========================================================
             let cart = [];
             const cartDrawer = document.getElementById('cartDrawer');
@@ -1948,11 +2395,13 @@
                 cartMiniTotal.textContent = totalPrice.toFixed(2);
 
                 if (cart.length === 0) {
+                    const emptyMsg = translations[currentLang].cart_empty || 'Your cart is empty';
+                    const hintMsg = translations[currentLang].cart_empty_hint || 'Add items from our deals!';
                     cartItems.innerHTML = `
                         <div class="cart-empty">
                             <i class="fas fa-shopping-cart"></i>
-                            Your cart is empty
-                            <p style="font-size: 14px; margin-top: 8px;">Add items from our deals!</p>
+                            <span data-i18n="cart_empty">${emptyMsg}</span>
+                            <p style="font-size: 14px; margin-top: 8px;" data-i18n="cart_empty_hint">${hintMsg}</p>
                         </div>
                     `;
                     cartTotal.textContent = '£0.00';
@@ -2031,14 +2480,17 @@
                     alert('Your cart is empty! Add some items first.');
                     return;
                 }
-                alert('✅ Thank you! Your order has been placed. (Simulated checkout)');
+                const msg = currentLang === 'pt' ? '✅ Obrigado! Seu pedido foi realizado. (Checkout simulado)' :
+                            currentLang === 'es' ? '✅ ¡Gracias! Tu pedido ha sido realizado. (Checkout simulado)' :
+                            '✅ Thank you! Your order has been placed. (Simulated checkout)';
+                alert(msg);
                 cart = [];
                 updateCartUI();
                 closeCart();
             });
 
             // ==========================================================
-            // NEWSLETTER — validação e feedback
+            // NEWSLETTER
             // ==========================================================
             const newsletterEmail = document.getElementById('newsletterEmail');
             const newsletterBtn = document.getElementById('newsletterBtn');
@@ -2046,17 +2498,24 @@
 
             newsletterBtn.addEventListener('click', function() {
                 const email = newsletterEmail.value.trim();
+                const msgs = {
+                    pt: { empty: '⚠️ Por favor, insira seu endereço de email.', invalid: '⚠️ Por favor, insira um email válido.', success: '✅ Você está inscrito!' },
+                    es: { empty: '⚠️ Por favor, ingresa tu dirección de correo electrónico.', invalid: '⚠️ Por favor, ingresa un correo electrónico válido.', success: '✅ ¡Estás suscrito!' },
+                    en: { empty: '⚠️ Please enter your email address.', invalid: '⚠️ Please enter a valid email address.', success: '✅ You\'re subscribed!' }
+                };
+                const m = msgs[currentLang] || msgs.en;
+
                 if (!email) {
-                    newsletterFeedback.textContent = '⚠️ Please enter your email address.';
+                    newsletterFeedback.textContent = m.empty;
                     newsletterFeedback.className = 'newsletter-feedback error';
                     return;
                 }
                 if (!email.includes('@') || !email.includes('.')) {
-                    newsletterFeedback.textContent = '⚠️ Please enter a valid email address.';
+                    newsletterFeedback.textContent = m.invalid;
                     newsletterFeedback.className = 'newsletter-feedback error';
                     return;
                 }
-                newsletterFeedback.textContent = '✅ You\'re subscribed!';
+                newsletterFeedback.textContent = m.success;
                 newsletterFeedback.className = 'newsletter-feedback';
                 newsletterEmail.value = '';
                 setTimeout(() => {
@@ -2069,14 +2528,22 @@
             });
 
             // ==========================================================
-            // BOTÕES "Get Started" — comportamento
+            // BOTÕES "Get Started"
             // ==========================================================
             document.querySelectorAll('.partner-overlay .btn-primary').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    alert('🚀 Welcome! This is a simulated onboarding flow.');
+                    const msg = currentLang === 'pt' ? '🚀 Bem-vindo! Este é um fluxo de onboarding simulado.' :
+                                currentLang === 'es' ? '🚀 ¡Bienvenido! Este es un flujo de onboarding simulado.' :
+                                '🚀 Welcome! This is a simulated onboarding flow.';
+                    alert(msg);
                 });
             });
+
+            // ==========================================================
+            // APLICA IDIOMA INICIAL (PT)
+            // ==========================================================
+            applyLanguage('pt');
 
         });
     </script>
